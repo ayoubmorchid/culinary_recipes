@@ -1,0 +1,19 @@
+/* Custom CSS for Culinary Recipes */
+
+:root {
+    --primary-color: #4a90d9;
+    --secondary-color: #6c757d;
+    --accent-color: #17a2b8;
+    --light-bg: #f8f9fa;
+    --dark-text: #2c3e50;
+}
+
+/* Additional custom styles if needed */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

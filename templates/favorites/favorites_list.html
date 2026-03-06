@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes Favoris - Culinary Recipes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">
+            <i class="fas fa-heart me-2"></i>Mes Recettes Favorites
+        </h2>
+    </div>
+</div>
+
+{% if favorites %}
+    <div class="row">
+        {% for favorite in favorites %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 fade-in">
+                    {% if favorite.recipe.image %}
+                        <img src="{{ favorite.recipe.image.url }}" class="card-img-top" alt="{{ favorite.recipe.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x300?text=Recette" class="card-img-top" alt="{{ favorite.recipe.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <span class="category-badge mb-2">{{ favorite.recipe.category.name|default:"Sans catégorie" }}</span>
+                        <h5 class="card-title mt-2">{{ favorite.recipe.title }}</h5>
+                        <p class="card-text text-muted">{{ favorite.recipe.description|truncatewords:15 }}</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>{{ favorite.recipe.preparation_time }} min
+                            </small>
+                            <span class="rating-stars">
+                                {% if favorite.recipe.average_rating > 0 %}
+                                    <i class="fas fa-star"></i> {{ favorite.recipe.average_rating }}
+                                {% else %}
+                                    <i class="far fa-star"></i> 0
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex gap-2">
+                            <a href="{{ favorite.recipe.get_absolute_url }}" class="btn btn-primary flex-grow-1">
+                                <i class="fas fa-eye me-2"></i>Voir
+                            </a>
+                            <a href="{% url 'favorites:remove_favorite' favorite.recipe.id %}" class="btn btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-heart fa-4x text-muted mb-3"></i>
+        <h4>Vous n'avez pas encore de favoris</h4>
+        <p class="text-muted">Parcourez les recettes et ajoutez celles qui vous plaisent à vos favoris!</p>
+        <a href="{% url 'recipes:recipe_list' %}" class="btn btn-primary">
+            <i class="fas fa-book me-2"></i>Parcourir les recettes
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

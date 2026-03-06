@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil de {{ profile_user.username }} - Culinary Recipes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow fade-in">
+            <div class="card-body text-center">
+                <i class="fas fa-user-circle fa-5x text-secondary mb-3"></i>
+                <h3>{{ profile_user.username }}</h3>
+                <p class="text-muted">{{ profile_user.profile.bio|default:"Pas de biographie" }}</p>
+                <hr>
+                <p class="mb-1"><strong>Prénom:</strong> {{ profile_user.first_name|default:"-" }}</p>
+                <p class="mb-1"><strong>Nom:</strong> {{ profile_user.last_name|default:"-" }}</p>
+                <p class="mb-0"><strong>Membre depuis:</strong> {{ profile_user.date_joined|date:"d F Y" }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card shadow fade-in">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-utensils me-2"></i>Recettes de {{ profile_user.username }}</h4>
+            </div>
+            <div class="card-body">
+                {% if user_recipes %}
+                    <div class="list-group list-group-flush">
+                        {% for recipe in user_recipes %}
+                            <a href="{{ recipe.get_absolute_url }}" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <i class="fas fa-utensils me-2"></i>{{ recipe.title }}
+                                        {% if recipe.category %}
+                                            <span class="badge bg-secondary ms-2">{{ recipe.category.name }}</span>
+                                        {% endif %}
+                                    </span>
+                                    <span class="badge bg-primary rounded-pill">
+                                        <i class="fas fa-star me-1"></i>{{ recipe.average_rating }}
+                                    </span>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center mb-0">
+                        <i class="fas fa-utensils me-2"></i>Cet utilisateur n'a pas encore de recettes publiées.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

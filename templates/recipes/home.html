@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Culinary Recipes{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="card bg-dark text-white mb-5 fade-in" style="border-radius: 20px; overflow: hidden;">
+    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600" class="card-img" alt="Cuisine" style="opacity: 0.4;">
+    <div class="card-img-overlay d-flex align-items-center justify-content-center text-center">
+        <div>
+            <h1 class="display-4 fw-bold">
+                <i class="fas fa-utensils me-3"></i>Culinary Recipes
+            </h1>
+            <p class="lead">Découvrez, partagez et expérimentez des recettes de cuisine exceptionnelles</p>
+            <a href="{% url 'recipes:recipe_list' %}" class="btn btn-primary btn-lg mt-3">
+                <i class="fas fa-book me-2"></i>Parcourir les recettes
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-lg-9">
+        <!-- Latest Recipes -->
+        <section class="mb-5">
+            <h2 class="mb-4">
+                <i class="fas fa-clock me-2"></i>Dernières Recettes
+            </h2>
+            {% if latest_recipes %}
+                <div class="row">
+                    {% for recipe in latest_recipes %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 fade-in">
+                                {% if recipe.image %}
+                                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/400x300?text=Recette" class="card-img-top" alt="{{ recipe.title }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <span class="category-badge mb-2">{{ recipe.category.name|default:"Sans catégorie" }}</span>
+                                    <h5 class="card-title mt-2">{{ recipe.title }}</h5>
+                                    <p class="card-text text-muted">{{ recipe.description|truncatewords:15 }}</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>{{ recipe.preparation_time }} min
+                                        </small>
+                                        <span class="rating-stars">
+                                            {% if recipe.average_rating > 0 %}
+                                                <i class="fas fa-star"></i> {{ recipe.average_rating }}
+                                            {% else %}
+                                                <i class="far fa-star"></i> 0
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{{ recipe.get_absolute_url }}" class="btn btn-primary w-100">
+                                        <i class="fas fa-eye me-2"></i>Voir la recette
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-utensils fa-4x text-muted mb-3"></i>
+                    <h4>Aucune recette pour le moment</h4>
+                    <p class="text-muted">Soyez le premier à publier une recette!</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Créer une recette
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </section>
+        
+        <!-- Top Rated Recipes -->
+        {% if top_rated_recipes %}
+        <section class="mb-5">
+            <h2 class="mb-4">
+                <i class="fas fa-star me-2"></i>Recettes les mieux notées
+            </h2>
+            <div class="row">
+                {% for recipe in top_rated_recipes %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 fade-in">
+                            {% if recipe.image %}
+                                <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/400x300?text=Recette" class="card-img-top" alt="{{ recipe.title }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <span class="category-badge mb-2">{{ recipe.category.name|default:"Sans catégorie" }}</span>
+                                <h5 class="card-title mt-2">{{ recipe.title }}</h5>
+                                <p class="card-text text-muted">{{ recipe.description|truncatewords:15 }}</p>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>{{ recipe.preparation_time }} min
+                                    </small>
+                                    <span class="rating-stars">
+                                        <i class="fas fa-star"></i> {{ recipe.average_rating }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{{ recipe.get_absolute_url }}" class="btn btn-primary w-100">
+                                    <i class="fas fa-eye me-2"></i>Voir la recette
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-3">
+        <!-- Categories -->
+        <div class="sidebar mb-4">
+            <h5 class="sidebar-title">
+                <i class="fas fa-list me-2"></i>Catégories
+            </h5>
+            <div class="list-group">
+                {% for category in categories %}
+                    <a href="{% url 'recipes:category' category.slug %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        {{ category.name }}
+                        <span class="badge bg-primary rounded-pill">{{ category.recipe_count }}</span>
+                    </a>
+                {% empty %}
+                    <p class="text-muted">Aucune catégorie</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="sidebar mb-4">
+            <h5 class="sidebar-title">
+                <i class="fas fa-link me-2"></i>Liens rapides
+            </h5>
+            <a href="{% url 'recipes:search' %}" class="sidebar-link">
+                <i class="fas fa-search me-2"></i>Recherche avancée
+            </a>
+            <a href="{% url 'recipes:recipe_list' %}" class="sidebar-link">
+                <i class="fas fa-book me-2"></i>Toutes les recettes
+            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'recipes:recipe_create' %}" class="sidebar-link">
+                    <i class="fas fa-plus me-2"></i>Créer une recette
+                </a>
+                <a href="{% url 'favorites:favorites_list' %}" class="sidebar-link">
+                    <i class="fas fa-heart me-2"></i>Mes favoris
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:register' %}" class="sidebar-link">
+                    <i class="fas fa-user-plus me-2"></i>S'inscrire
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

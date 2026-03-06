@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Modifier{% else %}Créer{% endif %} une Recette - Culinary Recipes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow fade-in">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-utensils me-2"></i>
+                    {% if form.instance.pk %}Modifier{% else %}Créer{% endif %} une Recette
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Titre de la recette</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="text-danger">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Catégorie</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Image</label>
+                            {{ form.image }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Temps de préparation (min)</label>
+                            {{ form.preparation_time }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Temps de cuisson (min)</label>
+                            {{ form.cooking_time }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Portions</label>
+                            {{ form.servings }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Ingrédients</label>
+                        <small class="text-muted">Un ingrédient par ligne</small>
+                        {{ form.ingredients }}
+                        {% if form.ingredients.errors %}
+                            <div class="text-danger">{{ form.ingredients.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Instructions</label>
+                        <small class="text-muted">Une étape par ligne</small>
+                        {{ form.instructions }}
+                        {% if form.instructions.errors %}
+                            <div class="text-danger">{{ form.instructions.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save me-2"></i>
+                            {% if form.instance.pk %}Enregistrer les modifications{% else %}Publier la recette{% endif %}
+                        </button>
+                        <a href="{% url 'recipes:recipe_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i>Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

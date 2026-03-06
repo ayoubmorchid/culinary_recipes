@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Mes recettes{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Mes recettes</h2>
+    <a class="btn btn-primary" href="{% url 'recipes:recipe_create' %}">
+      + Ajouter une recette
+    </a>
+  </div>
+
+  {% if recipes %}
+    <div class="row g-3">
+      {% for recipe in recipes %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            {% if recipe.image %}
+              <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ recipe.title }}</h5>
+              <p class="text-muted mb-2">
+                {{ recipe.prep_time }} min • {{ recipe.category.name }}
+              </p>
+              <p class="card-text">
+                {{ recipe.description|truncatechars:120 }}
+              </p>
+            </div>
+            <div class="card-footer bg-white d-flex gap-2">
+              <a class="btn btn-outline-primary btn-sm"
+                 href="{% url 'recipes:recipe_detail' recipe.slug %}">
+                Voir
+              </a>
+              <a class="btn btn-outline-secondary btn-sm"
+                 href="{% url 'recipes:recipe_update' recipe.slug %}">
+                Modifier
+              </a>
+              <a class="btn btn-outline-danger btn-sm"
+                 href="{% url 'recipes:recipe_delete' recipe.slug %}">
+                Supprimer
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">
+      Vous n’avez pas encore ajouté de recettes.
+      <a href="{% url 'recipes:recipe_create' %}">Créer votre première recette</a>.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

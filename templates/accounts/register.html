@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription - Culinary Recipes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-lg fade-in">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <i class="fas fa-utensils fa-3x text-primary"></i>
+          <h2 class="mt-3">Créer un compte</h2>
+          <p class="text-muted">Rejoignez notre communauté de passionnés de cuisine</p>
+        </div>
+
+        {# ✅ Affichage des erreurs du formulaire #}
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            <strong>Veuillez corriger les erreurs ci-dessous :</strong>
+            <hr class="my-2">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <div>• {{ error }}</div>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <div>• {{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'accounts:register' %}">
+          {% csrf_token %}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_username" class="form-label">Nom d'utilisateur</label>
+              <input
+                type="text"
+                name="username"
+                class="form-control"
+                id="id_username"
+                value="{{ form.username.value|default_if_none:'' }}"
+                required
+              >
+              {% if form.username.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.username.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="id_email" class="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                id="id_email"
+                value="{{ form.email.value|default_if_none:'' }}"
+                required
+              >
+              {% if form.email.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.email.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_first_name" class="form-label">Prénom</label>
+              <input
+                type="text"
+                name="first_name"
+                class="form-control"
+                id="id_first_name"
+                value="{{ form.first_name.value|default_if_none:'' }}"
+              >
+              {% if form.first_name.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.first_name.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="id_last_name" class="form-label">Nom</label>
+              <input
+                type="text"
+                name="last_name"
+                class="form-control"
+                id="id_last_name"
+                value="{{ form.last_name.value|default_if_none:'' }}"
+              >
+              {% if form.last_name.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.last_name.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_password1" class="form-label">Mot de passe</label>
+              <input
+                type="password"
+                name="password1"
+                class="form-control"
+                id="id_password1"
+                required
+              >
+              {% if form.password1.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.password1.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="id_password2" class="form-label">Confirmer le mot de passe</label>
+              <input
+                type="password"
+                name="password2"
+                class="form-control"
+                id="id_password2"
+                required
+              >
+              {% if form.password2.errors %}
+                <div class="text-danger small mt-1">
+                  {{ form.password2.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="terms" required>
+            <label class="form-check-label" for="terms">
+              J'accepte les <a href="#">conditions d'utilisation</a>
+            </label>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fas fa-user-plus me-2"></i>Créer mon compte
+            </button>
+          </div>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="text-center">
+          <p class="mb-0">Vous avez déjà un compte ?</p>
+          <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary mt-2">
+            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
