@@ -17,26 +17,32 @@
         <div class="col-md-6 col-lg-4">
           <div class="card h-100 shadow-sm">
             {% if recipe.image %}
-              <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+              <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="height: 220px; object-fit: cover;">
             {% endif %}
+
             <div class="card-body">
               <h5 class="card-title">{{ recipe.title }}</h5>
+
               <p class="text-muted mb-2">
-                {{ recipe.prep_time }} min • {{ recipe.category.name }}
+                {{ recipe.preparation_time }} min • {{ recipe.category.name }}
               </p>
+
               <p class="card-text">
                 {{ recipe.description|truncatechars:120 }}
               </p>
             </div>
+
             <div class="card-footer bg-white d-flex gap-2">
               <a class="btn btn-outline-primary btn-sm"
                  href="{% url 'recipes:recipe_detail' recipe.slug %}">
                 Voir
               </a>
+
               <a class="btn btn-outline-secondary btn-sm"
                  href="{% url 'recipes:recipe_update' recipe.slug %}">
                 Modifier
               </a>
+
               <a class="btn btn-outline-danger btn-sm"
                  href="{% url 'recipes:recipe_delete' recipe.slug %}">
                 Supprimer
@@ -46,6 +52,40 @@
         </div>
       {% endfor %}
     </div>
+
+    <!-- Pagination -->
+    {% if recipes.has_other_pages %}
+    <nav class="mt-4">
+      <ul class="pagination justify-content-center">
+
+        {% if recipes.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ recipes.previous_page_number }}">Précédent</a>
+          </li>
+        {% endif %}
+
+        {% for num in recipes.paginator.page_range %}
+          {% if recipes.number == num %}
+            <li class="page-item active">
+              <span class="page-link">{{ num }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if recipes.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ recipes.next_page_number }}">Suivant</a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </nav>
+    {% endif %}
+
   {% else %}
     <div class="alert alert-info">
       Vous n’avez pas encore ajouté de recettes.
