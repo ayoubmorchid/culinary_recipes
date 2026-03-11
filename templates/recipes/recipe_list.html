@@ -15,7 +15,7 @@
             <form method="GET" action="{% url 'recipes:recipe_list' %}">
                 <div class="mb-3">
                     <label class="form-label">Nom de recette</label>
-                    <input type="text" name="q" class="form-control" placeholder="Ex: Tajine">
+                    <input type="text" name="q" class="form-control" placeholder="Ex: Tajine" value="{{ request.GET.q }}">
                 </div>
 
                 <div class="d-grid">
@@ -33,7 +33,7 @@
             </h5>
             <div class="list-group">
                 {% for category in categories %}
-                    <a href="{% url 'recipes:category' category.slug %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'recipes:category' slug=category.slug %}" class="list-group-item list-group-item-action">
                         {{ category.name }}
                     </a>
                 {% empty %}
@@ -85,7 +85,6 @@
             {% if is_paginated %}
             <nav class="mt-4">
                 <ul class="pagination justify-content-center">
-
                     {% if page_obj.has_previous %}
                         <li class="page-item">
                             <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a>
@@ -109,7 +108,6 @@
                             <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a>
                         </li>
                     {% endif %}
-
                 </ul>
             </nav>
             {% endif %}
