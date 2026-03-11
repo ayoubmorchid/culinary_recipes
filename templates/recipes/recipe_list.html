@@ -9,37 +9,18 @@
     <div class="col-lg-3 mb-4">
         <div class="sidebar">
             <h5 class="sidebar-title">
-                <i class="fas fa-filter me-2"></i>Filtres
+                <i class="fas fa-search me-2"></i>Recherche
             </h5>
 
-            <form method="GET" action="{% url 'recipes:search' %}">
+            <form method="GET" action="{% url 'recipes:recipe_list' %}">
                 <div class="mb-3">
-                    <label class="form-label">Catégorie</label>
-                    <select name="category" class="form-select">
-                        <option value="">Toutes les catégories</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Temps max (minutes)</label>
-                    <input type="number" name="max_preparation_time" class="form-control" placeholder="Ex: 30">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Trier par</label>
-                    <select name="sort_by" class="form-select">
-                        <option value="-created_at">Plus récentes</option>
-                        <option value="created_at">Plus anciennes</option>
-                        <option value="preparation_time">Temps de préparation</option>
-                    </select>
+                    <label class="form-label">Nom de recette</label>
+                    <input type="text" name="q" class="form-control" placeholder="Ex: Tajine">
                 </div>
 
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search me-2"></i>Appliquer
+                        <i class="fas fa-search me-2"></i>Rechercher
                     </button>
                 </div>
             </form>
@@ -66,9 +47,6 @@
     <div class="col-lg-9">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2><i class="fas fa-utensils me-2"></i>Toutes les Recettes</h2>
-            <a href="{% url 'recipes:search' %}" class="btn btn-outline-primary">
-                <i class="fas fa-search me-2"></i>Recherche avancée
-            </a>
         </div>
 
         {% if recipes %}
@@ -91,13 +69,6 @@
                                     <small class="text-muted">
                                         <i class="fas fa-clock me-1"></i>{{ recipe.preparation_time }} min
                                     </small>
-                                    <span class="rating-stars">
-                                        {% if recipe.average_rating > 0 %}
-                                            <i class="fas fa-star"></i> {{ recipe.average_rating }}
-                                        {% else %}
-                                            <i class="far fa-star"></i> 0
-                                        {% endif %}
-                                    </span>
                                 </div>
                             </div>
 
@@ -111,7 +82,6 @@
                 {% endfor %}
             </div>
 
-            <!-- Pagination -->
             {% if is_paginated %}
             <nav class="mt-4">
                 <ul class="pagination justify-content-center">
@@ -146,12 +116,7 @@
 
         {% else %}
             <div class="text-center py-5">
-                <i class="fas fa-utensils fa-4x text-muted mb-3"></i>
                 <h4>Aucune recette trouvée</h4>
-                <p class="text-muted">Soyez le premier à publier une recette!</p>
-                <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>Créer une recette
-                </a>
             </div>
         {% endif %}
     </div>
