@@ -49,7 +49,7 @@ class RecipeListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Recipe.objects.filter(is_published=True).select_related(
+        queryset = Recipe.objects.all().select_related(
             'author', 'category'
         ).prefetch_related('ratings')
 
