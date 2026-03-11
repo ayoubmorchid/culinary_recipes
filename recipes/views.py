@@ -12,10 +12,6 @@ from favorites.models import Favorite
 
 
 def home(request):
-    """
-    Vue de la page d'accueil.
-    Affiche les dernières recettes et les mieux notées.
-    """
     latest_recipes = Recipe.objects.filter(
         is_published=True
     ).select_related('author', 'category').order_by('-created_at')[:6]
@@ -39,10 +35,6 @@ def home(request):
 
 
 class RecipeListView(ListView):
-    """
-    Vue liste de toutes les recettes publiées.
-    Inclut la pagination et les options de tri.
-    """
     model = Recipe
     template_name = 'recipes/recipe_list.html'
     context_object_name = 'recipes'
@@ -53,36 +45,20 @@ class RecipeListView(ListView):
             'author', 'category'
         ).prefetch_related('ratings')
 
-        sort_by = (self.request.GET.get('sort_by') or '-created_at').strip()
+        query = self.request.GET.get('q')
 
-        # Tri sécurisé
-        if sort_by == 'average_rating':
-            queryset = queryset.annotate(
-                avg_rating=Avg('ratings__rating')
-            ).order_by('-avg_rating', '-created_at')
-        elif sort_by == 'preparation_time':
-            queryset = queryset.order_by('preparation_time', '-created_at')
-        else:
-            # empêcher order_by('') أو قيم غريبة
-            allowed = {'-created_at', 'created_at', 'title', '-title'}
-            if sort_by not in allowed:
-                sort_by = '-created_at'
-            queryset = queryset.order_by(sort_by)
+        if query:
+            queryset = queryset.filter(title__istartswith=query)
 
-        return queryset
+        return queryset.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
-        context['sort_by'] = self.request.GET.get('sort_by', '-created_at')
         return context
 
 
 class RecipeDetailView(DetailView):
-    """
-    Vue détail d'une recette.
-    Affiche toutes les informations, commentaires et notes.
-    """
     model = Recipe
     template_name = 'recipes/recipe_detail.html'
     context_object_name = 'recipe'
@@ -223,15 +199,11 @@ class CategoryRecipeListView(ListView):
 
 
 def search_recipes(request):
-    """
-    Recherche avancée sécurisée (évite order_by('') et champs inconnus).
-    """
     form = SearchForm(request.GET)
     recipes = Recipe.objects.filter(is_published=True).select_related(
         'author', 'category'
     ).prefetch_related('ratings')
 
-    # mapping sécurisé للتري
     sort_map = {
         'newest': '-created_at',
         'oldest': 'created_at',
@@ -265,7 +237,7 @@ def search_recipes(request):
                 avg_rating=Avg('ratings__rating')
             ).order_by('-avg_rating', '-created_at')
         else:
-            order_field = sort_map.get(sort_by, '-created_at')  # default آمن
+            order_field = sort_map.get(sort_by, '-created_at')
             recipes = recipes.order_by(order_field)
 
     paginator = Paginator(recipes, 9)
