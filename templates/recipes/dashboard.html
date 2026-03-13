@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Admin - Culinary Recipes{% endblock %}
+
+{% block extra_css %}
+<style>
+  .stat-card {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-radius: var(--radius);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(108, 99, 255, 0.3);
+  }
+  .stat-icon {
+    font-size: 3rem;
+    opacity: 0.9;
+  }
+  .recent-item {
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+  }
+  .recent-item:hover {
+    background: #f8f9ff;
+    transform: translateX(5px);
+  }
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .recipe-img-sm {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <h1 class="mb-1">
+        <i class="fas fa-tachometer-alt text-primary me-3"></i>
+        Dashboard Admin
+      </h1>
+      <p class="text-muted mb-0">Vue d'ensemble de votre plateforme Culinary Recipes</p>
+    </div>
+    <a href="{% url 'admin:index' %}" class="btn btn-outline-primary">
+      <i class="fas fa-cogs me-2"></i>Admin Django
+    </a>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-2 col-sm-6">
+      <div class="card stat-card h-100">
+        <div class="card-body text-center py-4">
+          <i class="fas fa-users stat-icon mb-3"></i>
+          <h2 class="mb-1">{{ total_users }}</h2>
+          <p class="mb-0">Utilisateurs</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <div class="card stat-card h-100">
+        <div class="card-body text-center py-4">
+          <i class="fas fa-book-open stat-icon mb-3"></i>
+          <h2 class="mb-1">{{ total_recipes }}</h2>
+          <p class="mb-0">Recettes</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <div class="card stat-card h-100">
+        <div class="card-body text-center py-4">
+          <i class="fas fa-tags stat-icon mb-3"></i>
+          <h2 class="mb-1">{{ total_categories }}</h2>
+          <p class="mb-0">Catégories</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <div class="card stat-card h-100">
+        <div class="card-body text-center py-4">
+          <i class="fas fa-comments stat-icon mb-3"></i>
+          <h2 class="mb-1">{{ total_comments }}</h2>
+          <p class="mb-0">Commentaires</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <div class="card stat-card h-100">
+        <div class="card-body text-center py-4">
+          <i class="fas fa-heart stat-icon mb-3"></i>
+          <h2 class="mb-1">{{ total_favorites }}</h2>
+          <p class="mb-0">Favoris</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Recent Users -->
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-user-plus me-2"></i>
+            5 derniers utilisateurs
+          </h5>
+        </div>
+        <div class="card-body p-0">
+          {% for user in last_users %}
+          <div class="recent-item p-4 border-bottom">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                {% if user.profile.avatar %}
+                  <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="user-avatar">
+                {% else %}
+                  <div class="user-avatar bg-light d-flex align-items-center justify-content-center text-muted rounded-circle">
+                    <i class="fas fa-user"></i>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="col">
+                <h6 class="mb-1">{{ user.username }}</h6>
+                <small class="text-muted">{{ user.email }}</small>
+              </div>
+              <small class="col-auto text-muted">{{ user.date_joined|date:"d/m/Y H:i" }}</small>
+            </div>
+          </div>
+          {% empty %}
+          <div class="p-4 text-center text-muted">
+            Aucun nouvel utilisateur
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Recipes -->
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-fire me-2"></i>
+            5 dernières recettes
+          </h5>
+        </div>
+        <div class="card-body p-0">
+          {% for recipe in last_recipes %}
+          <div class="recent-item p-4 border-bottom">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                {% if recipe.image %}
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-img-sm">
+                {% else %}
+                  <div class="recipe-img-sm bg-light d-flex align-items-center justify-content-center text-muted rounded">
+                    <i class="fas fa-utensils fs-6"></i>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="col">
+                <h6 class="mb-1">{{ recipe.title|truncatechars:30 }}</h6>
+                <div class="small">
+                  Par {{ recipe.author.username }}
+                  {% if recipe.category %}
+                    • {{ recipe.category.name }}
+                  {% endif %}
+                </div>
+              </div>
+              <small class="col-auto text-muted">{{ recipe.created_at|date:"d/m/Y H:i" }}</small>
+            </div>
+          </div>
+          {% empty %}
+          <div class="p-4 text-center text-muted">
+            Aucune nouvelle recette
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

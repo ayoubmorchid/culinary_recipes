@@ -10,6 +10,10 @@ from .models import Recipe, Category, Comment, Rating
 from .forms import RecipeForm, CommentForm, RatingForm
 from favorites.models import Favorite
 
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import get_user_model
+from accounts.models import Profile
+
 
 def home(request):
     latest_recipes = Recipe.objects.filter(
@@ -216,3 +220,23 @@ def my_recipes(request):
         'title': 'Mes recettes'
     }
     return render(request, 'recipes/my_recipes.html', context)
+
+
+@staff_member_required(login_url='accounts:login')
+def dashboard(request):
+    """
+    Admin dashboard showing key statistics and recent activity.
+    """
+    User = get_user_model()
+    
+    context = {
+        'total_users': User.objects.count(),
+        'total_recipes': Recipe.objects.count(),
+        'total_categories': Category.objects.count(),
+        'total_comments': Comment.objects.count(),
+        'total_favorites': Favorite.objects.count(),
+        'last_users': User.objects.select_related('profile').order_by('-date_joined')[:5],
+        'last_recipes': Recipe.objects.select_related('author__profile', 'category').order_by('-created_at')[:5],
+    }
+    
+    return render(request, 'recipes/dashboard.html', context)
