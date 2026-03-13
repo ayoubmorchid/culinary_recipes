@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.views.generic import DetailView
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
+from .models import Profile
 from recipes.models import Recipe
 
 
@@ -17,6 +18,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.get_or_create(user=user)
             login(request, user)
             messages.success(request, f'Compte créé avec succès! Bienvenue {user.username}!')
             return redirect('home')
@@ -35,6 +37,7 @@ def user_login(request):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            Profile.objects.get_or_create(user=user)
             login(request, user)
             messages.success(request, f'Bienvenue {user.username}!')
             next_url = request.GET.get('next', 'home')
@@ -60,23 +63,24 @@ def profile(request):
     Vue du profil utilisateur.
     Affiche les informations du profil et permet sa modification.
     """
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(
             request.POST,
             request.FILES,
-            instance=request.user.profile
+            instance=profile
         )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             messages.success(request, 'Votre profil a été mis à jour!')
-            return redirect('profile')
+            return redirect('accounts:profile')
     else:
         user_form = UserUpdateForm(instance=request.user)
-        profile_form = ProfileUpdateForm(instance=request.user.profile)
+        profile_form = ProfileUpdateForm(instance=profile)
 
-    # Récupérer les recettes de l'utilisateur
     user_recipes = Recipe.objects.filter(author=request.user).order_by('-created_at')[:5]
 
     context = {
@@ -98,6 +102,7 @@ class UserProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        Profile.objects.get_or_create(user=self.object)
         context['user_recipes'] = Recipe.objects.filter(
             author=self.object,
             is_published=True
