@@ -3,11 +3,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from django.db.models import Q, Avg
+from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy
 from .models import Recipe, Category, Comment, Rating
-from .forms import RecipeForm, CommentForm, RatingForm, SearchForm
+from .forms import RecipeForm, CommentForm, RatingForm
 from favorites.models import Favorite
 
 
@@ -196,65 +196,6 @@ class CategoryRecipeListView(ListView):
         context['category'] = self.category
         context['categories'] = Category.objects.all()
         return context
-
-
-def search_recipes(request):
-    form = SearchForm(request.GET)
-    recipes = Recipe.objects.filter(is_published=True).select_related(
-        'author', 'category'
-    ).prefetch_related('ratings')
-
-    sort_map = {
-        'newest': '-created_at',
-        'oldest': 'created_at',
-        'title': 'title',
-        'title_desc': '-title',
-        'preparation_time': 'preparation_time',
-        'preparation_time_desc': '-preparation_time',
-    }
-
-    if form.is_valid():
-        query = (form.cleaned_data.get('query') or '').strip()
-        category = form.cleaned_data.get('category')
-        max_time = form.cleaned_data.get('max_preparation_time')
-        sort_by = (form.cleaned_data.get('sort_by') or '').strip()
-
-        if query:
-            recipes = recipes.filter(
-                Q(title__icontains=query) |
-                Q(ingredients__icontains=query) |
-                Q(description__icontains=query)
-            )
-
-        if category:
-            recipes = recipes.filter(category=category)
-
-        if max_time is not None:
-            recipes = recipes.filter(preparation_time__lte=max_time)
-
-        if sort_by == 'average_rating':
-            recipes = recipes.annotate(
-                avg_rating=Avg('ratings__rating')
-            ).order_by('-avg_rating', '-created_at')
-        else:
-            order_field = sort_map.get(sort_by, '-created_at')
-            recipes = recipes.order_by(order_field)
-
-    paginator = Paginator(recipes, 9)
-    page = request.GET.get('page')
-    try:
-        recipes = paginator.page(page)
-    except PageNotAnInteger:
-        recipes = paginator.page(1)
-    except EmptyPage:
-        recipes = paginator.page(paginator.num_pages)
-
-    context = {
-        'form': form,
-        'recipes': recipes,
-        'categories': Category.objects.all(),
-    }
-    return render(request, 'recipes/search.html', context)
 
 
 @login_required(login_url='accounts:login')

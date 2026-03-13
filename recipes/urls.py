@@ -16,8 +16,7 @@ urlpatterns = [
     # Mes recettes
     path('mes-recettes/', views.my_recipes, name='my_recipes'),
 
-    # Recherche
-    path('recherche/', views.search_recipes, name='search'),
+
 
     # Recettes par catégorie
     path('categorie/<slug:slug>/', views.CategoryRecipeListView.as_view(), name='category'),
