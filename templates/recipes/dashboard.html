@@ -5,183 +5,584 @@
 
 {% block extra_css %}
 <style>
-  .stat-card {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: white;
-    border-radius: var(--radius);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .dashboard-wrapper {
+    padding: 1rem 0 2rem;
   }
-  .stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(108, 99, 255, 0.3);
+
+  .dashboard-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    padding: 2.2rem;
+    background:
+      radial-gradient(circle at top right, rgba(255,255,255,0.22), transparent 30%),
+      linear-gradient(135deg, #6c63ff 0%, #574fd6 45%, #3e38b3 100%);
+    color: #fff;
+    box-shadow: 0 24px 50px rgba(87, 79, 214, 0.28);
+    margin-bottom: 2rem;
   }
-  .stat-icon {
-    font-size: 3rem;
-    opacity: 0.9;
+
+  .dashboard-hero::before,
+  .dashboard-hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    z-index: 0;
   }
-  .recent-item {
-    border-left: 4px solid var(--primary-color);
+
+  .dashboard-hero::before {
+    width: 220px;
+    height: 220px;
+    top: -70px;
+    right: -70px;
+  }
+
+  .dashboard-hero::after {
+    width: 140px;
+    height: 140px;
+    bottom: -50px;
+    left: -40px;
+  }
+
+  .dashboard-hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dashboard-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .dashboard-title i {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.16);
+    font-size: 1.5rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.88);
+    margin-bottom: 0;
+  }
+
+  .dashboard-admin-btn {
+    border-radius: 14px;
+    padding: 0.85rem 1.3rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    backdrop-filter: blur(6px);
     transition: all 0.3s ease;
   }
-  .recent-item:hover {
-    background: #f8f9ff;
-    transform: translateX(5px);
+
+  .dashboard-admin-btn:hover {
+    background: #fff;
+    color: #574fd6;
+    transform: translateY(-2px);
   }
-  .user-avatar {
-    width: 40px;
-    height: 40px;
+
+  .stats-grid .col-lg-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+
+  @media (max-width: 991px) {
+    .stats-grid .col-lg-2-4 {
+      width: 50%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .stats-grid .col-lg-2-4 {
+      width: 100%;
+    }
+  }
+
+  .stat-card {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-radius: 24px;
+    color: #fff;
+    min-height: 190px;
+    box-shadow: 0 18px 35px rgba(0,0,0,0.1);
+    transition: all 0.35s ease;
+  }
+
+  .stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02));
+    z-index: 0;
+  }
+
+  .stat-card::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    bottom: -30px;
+    width: 110px;
+    height: 110px;
+    background: rgba(255,255,255,0.12);
     border-radius: 50%;
-    object-fit: cover;
   }
-  .recipe-img-sm {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
+
+  .stat-card .card-body {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem 1.3rem;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 45px rgba(0,0,0,0.16);
+  }
+
+  .stat-card.users-card {
+    background: linear-gradient(135deg, #6c63ff, #4f46e5);
+  }
+
+  .stat-card.recipes-card {
+    background: linear-gradient(135deg, #ff7a59, #ff5c7a);
+  }
+
+  .stat-card.categories-card {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+  }
+
+  .stat-card.comments-card {
+    background: linear-gradient(135deg, #f6b93b, #fa983a);
+  }
+
+  .stat-card.favorites-card {
+    background: linear-gradient(135deg, #e84393, #fd79a8);
+  }
+
+  .stat-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+  }
+
+  .stat-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.18);
+    font-size: 1.55rem;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+  }
+
+  .stat-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.92;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-footer {
+    font-size: 0.85rem;
+    opacity: 0.88;
+  }
+
+  .panel-card {
+    border: none;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    background: #fff;
+  }
+
+  .panel-header {
+    padding: 1.1rem 1.3rem;
+    border-bottom: 1px solid #f0f2f7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .panel-title i {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .users-icon-box {
+    background: rgba(108, 99, 255, 0.12);
+    color: #574fd6;
+  }
+
+  .recipes-icon-box {
+    background: rgba(255, 122, 89, 0.14);
+    color: #ff6b4a;
+  }
+
+  .panel-body {
+    padding: 0;
+  }
+
+  .recent-item {
+    padding: 1rem 1.25rem;
+    border-left: 4px solid transparent;
+    border-bottom: 1px solid #f4f5f8;
+    transition: all 0.25s ease;
+  }
+
+  .recent-item:last-child {
+    border-bottom: none;
+  }
+
+  .recent-item:hover {
+    background: #fafbff;
+    border-left-color: #6c63ff;
+    transform: translateX(4px);
+  }
+
+  .user-avatar,
+  .recipe-img-sm,
+  .empty-thumb {
+    width: 52px;
+    height: 52px;
     object-fit: cover;
+    border-radius: 16px;
+    flex-shrink: 0;
+  }
+
+  .user-avatar {
+    border-radius: 50%;
+    border: 2px solid #eef1ff;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  }
+
+  .recipe-img-sm {
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  }
+
+  .empty-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f3f4f8, #e9edf5);
+    color: #8a94a6;
+    font-size: 1rem;
+  }
+
+  .item-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.2rem;
+  }
+
+  .item-subtitle {
+    font-size: 0.88rem;
+    color: #6b7280;
+    margin-bottom: 0;
+  }
+
+  .item-date {
+    font-size: 0.78rem;
+    color: #9aa3b2;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .badge-soft {
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: #f2f4ff;
+    color: #5c52e0;
+    font-size: 0.76rem;
+    font-weight: 600;
+    margin-top: 0.35rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #94a3b8;
+  }
+
+  .empty-state i {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 991px) {
+    .dashboard-hero {
+      padding: 1.6rem;
+    }
+
+    .dashboard-title {
+      font-size: 1.7rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .dashboard-title {
+      font-size: 1.45rem;
+    }
+
+    .dashboard-title i {
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
+    }
+
+    .dashboard-admin-btn {
+      margin-top: 1rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .recent-item .row {
+      row-gap: 0.75rem;
+    }
+
+    .item-date {
+      white-space: normal;
+    }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="main-content">
-  <div class="d-flex justify-content-between align-items-center mb-5">
-    <div>
-      <h1 class="mb-1">
-        <i class="fas fa-tachometer-alt text-primary me-3"></i>
-        Dashboard Admin
-      </h1>
-      <p class="text-muted mb-0">Vue d'ensemble de votre plateforme Culinary Recipes</p>
+<div class="dashboard-wrapper">
+  <div class="dashboard-hero">
+    <div class="dashboard-hero-content">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+          <h1 class="dashboard-title">
+            <i class="fas fa-chart-line"></i>
+            Dashboard Admin
+          </h1>
+          <p class="dashboard-subtitle">
+            Vue d’ensemble élégante et rapide de votre plateforme Culinary Recipes
+          </p>
+        </div>
+        <a href="{% url 'admin:index' %}" class="dashboard-admin-btn">
+          <i class="fas fa-cogs me-2"></i>Admin Django
+        </a>
+      </div>
     </div>
-    <a href="{% url 'admin:index' %}" class="btn btn-outline-primary">
-      <i class="fas fa-cogs me-2"></i>Admin Django
-    </a>
   </div>
 
-  <!-- Statistics Cards -->
-  <div class="row g-4 mb-5">
-    <div class="col-md-2 col-sm-6">
-      <div class="card stat-card h-100">
-        <div class="card-body text-center py-4">
-          <i class="fas fa-users stat-icon mb-3"></i>
-          <h2 class="mb-1">{{ total_users }}</h2>
-          <p class="mb-0">Utilisateurs</p>
+  <div class="row g-4 stats-grid mb-4">
+    <div class="col-lg-2-4 col-md-4 col-sm-6">
+      <div class="card stat-card users-card h-100">
+        <div class="card-body">
+          <div class="stat-top">
+            <div>
+              <div class="stat-label">Utilisateurs</div>
+              <div class="stat-value">{{ total_users }}</div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+          <div class="stat-footer">Comptes enregistrés sur la plateforme</div>
         </div>
       </div>
     </div>
-    <div class="col-md-2 col-sm-6">
-      <div class="card stat-card h-100">
-        <div class="card-body text-center py-4">
-          <i class="fas fa-book-open stat-icon mb-3"></i>
-          <h2 class="mb-1">{{ total_recipes }}</h2>
-          <p class="mb-0">Recettes</p>
+
+    <div class="col-lg-2-4 col-md-4 col-sm-6">
+      <div class="card stat-card recipes-card h-100">
+        <div class="card-body">
+          <div class="stat-top">
+            <div>
+              <div class="stat-label">Recettes</div>
+              <div class="stat-value">{{ total_recipes }}</div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+          </div>
+          <div class="stat-footer">Recettes disponibles dans le site</div>
         </div>
       </div>
     </div>
-    <div class="col-md-2 col-sm-6">
-      <div class="card stat-card h-100">
-        <div class="card-body text-center py-4">
-          <i class="fas fa-tags stat-icon mb-3"></i>
-          <h2 class="mb-1">{{ total_categories }}</h2>
-          <p class="mb-0">Catégories</p>
+
+    <div class="col-lg-2-4 col-md-4 col-sm-6">
+      <div class="card stat-card categories-card h-100">
+        <div class="card-body">
+          <div class="stat-top">
+            <div>
+              <div class="stat-label">Catégories</div>
+              <div class="stat-value">{{ total_categories }}</div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-tags"></i>
+            </div>
+          </div>
+          <div class="stat-footer">Organisation des recettes par type</div>
         </div>
       </div>
     </div>
-    <div class="col-md-2 col-sm-6">
-      <div class="card stat-card h-100">
-        <div class="card-body text-center py-4">
-          <i class="fas fa-comments stat-icon mb-3"></i>
-          <h2 class="mb-1">{{ total_comments }}</h2>
-          <p class="mb-0">Commentaires</p>
+
+    <div class="col-lg-2-4 col-md-6 col-sm-6">
+      <div class="card stat-card comments-card h-100">
+        <div class="card-body">
+          <div class="stat-top">
+            <div>
+              <div class="stat-label">Commentaires</div>
+              <div class="stat-value">{{ total_comments }}</div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+          </div>
+          <div class="stat-footer">Interactions laissées par les utilisateurs</div>
         </div>
       </div>
     </div>
-    <div class="col-md-2 col-sm-6">
-      <div class="card stat-card h-100">
-        <div class="card-body text-center py-4">
-          <i class="fas fa-heart stat-icon mb-3"></i>
-          <h2 class="mb-1">{{ total_favorites }}</h2>
-          <p class="mb-0">Favoris</p>
+
+    <div class="col-lg-2-4 col-md-6 col-sm-6">
+      <div class="card stat-card favorites-card h-100">
+        <div class="card-body">
+          <div class="stat-top">
+            <div>
+              <div class="stat-label">Favoris</div>
+              <div class="stat-value">{{ total_favorites }}</div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+          </div>
+          <div class="stat-footer">Recettes sauvegardées par les membres</div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="row g-4">
-    <!-- Recent Users -->
     <div class="col-lg-6">
-      <div class="card h-100">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">
-            <i class="fas fa-user-plus me-2"></i>
+      <div class="panel-card h-100">
+        <div class="panel-header">
+          <h5 class="panel-title">
+            <span class="users-icon-box"><i class="fas fa-user-plus"></i></span>
             5 derniers utilisateurs
           </h5>
         </div>
-        <div class="card-body p-0">
+
+        <div class="panel-body">
           {% for user in last_users %}
-          <div class="recent-item p-4 border-bottom">
+          <div class="recent-item">
             <div class="row align-items-center">
               <div class="col-auto">
                 {% if user.profile.avatar %}
                   <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="user-avatar">
                 {% else %}
-                  <div class="user-avatar bg-light d-flex align-items-center justify-content-center text-muted rounded-circle">
+                  <div class="empty-thumb rounded-circle">
                     <i class="fas fa-user"></i>
                   </div>
                 {% endif %}
               </div>
+
               <div class="col">
-                <h6 class="mb-1">{{ user.username }}</h6>
-                <small class="text-muted">{{ user.email }}</small>
+                <div class="item-title">{{ user.username }}</div>
+                <p class="item-subtitle mb-0">
+                  {% if user.email %}
+                    {{ user.email }}
+                  {% else %}
+                    Aucun email
+                  {% endif %}
+                </p>
               </div>
-              <small class="col-auto text-muted">{{ user.date_joined|date:"d/m/Y H:i" }}</small>
+
+              <div class="col-md-auto">
+                <div class="item-date">{{ user.date_joined|date:"d/m/Y H:i" }}</div>
+              </div>
             </div>
           </div>
           {% empty %}
-          <div class="p-4 text-center text-muted">
-            Aucun nouvel utilisateur
+          <div class="empty-state">
+            <i class="fas fa-user-slash"></i>
+            <div>Aucun nouvel utilisateur</div>
           </div>
           {% endfor %}
         </div>
       </div>
     </div>
 
-    <!-- Recent Recipes -->
     <div class="col-lg-6">
-      <div class="card h-100">
-        <div class="card-header bg-success text-white">
-          <h5 class="mb-0">
-            <i class="fas fa-fire me-2"></i>
+      <div class="panel-card h-100">
+        <div class="panel-header">
+          <h5 class="panel-title">
+            <span class="recipes-icon-box"><i class="fas fa-fire"></i></span>
             5 dernières recettes
           </h5>
         </div>
-        <div class="card-body p-0">
+
+        <div class="panel-body">
           {% for recipe in last_recipes %}
-          <div class="recent-item p-4 border-bottom">
+          <div class="recent-item">
             <div class="row align-items-center">
               <div class="col-auto">
                 {% if recipe.image %}
                   <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-img-sm">
                 {% else %}
-                  <div class="recipe-img-sm bg-light d-flex align-items-center justify-content-center text-muted rounded">
-                    <i class="fas fa-utensils fs-6"></i>
+                  <div class="empty-thumb">
+                    <i class="fas fa-utensils"></i>
                   </div>
                 {% endif %}
               </div>
+
               <div class="col">
-                <h6 class="mb-1">{{ recipe.title|truncatechars:30 }}</h6>
-                <div class="small">
-                  Par {{ recipe.author.username }}
-                  {% if recipe.category %}
-                    • {{ recipe.category.name }}
-                  {% endif %}
-                </div>
+                <div class="item-title">{{ recipe.title|truncatechars:32 }}</div>
+                <p class="item-subtitle mb-0">Par {{ recipe.author.username }}</p>
+                {% if recipe.category %}
+                  <span class="badge-soft">{{ recipe.category.name }}</span>
+                {% endif %}
               </div>
-              <small class="col-auto text-muted">{{ recipe.created_at|date:"d/m/Y H:i" }}</small>
+
+              <div class="col-md-auto">
+                <div class="item-date">{{ recipe.created_at|date:"d/m/Y H:i" }}</div>
+              </div>
             </div>
           </div>
           {% empty %}
-          <div class="p-4 text-center text-muted">
-            Aucune nouvelle recette
+          <div class="empty-state">
+            <i class="fas fa-book-dead"></i>
+            <div>Aucune nouvelle recette</div>
           </div>
           {% endfor %}
         </div>
@@ -190,4 +591,3 @@
   </div>
 </div>
 {% endblock %}
-
