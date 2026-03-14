@@ -7,6 +7,9 @@ urlpatterns = [
     # Liste des recettes
     path('', views.RecipeListView.as_view(), name='recipe_list'),
 
+    # Recherche
+    path('recherche/', views.search_recipes, name='search'),
+
     # Création d'une recette
     path('creer/', views.RecipeCreateView.as_view(), name='recipe_create'),
 

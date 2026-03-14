@@ -45,21 +45,45 @@ class RecipeListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Recipe.objects.all().select_related(
+        return Recipe.objects.all().select_related(
             'author', 'category'
-        ).prefetch_related('ratings')
-
-        query = self.request.GET.get('q')
-
-        if query:
-            queryset = queryset.filter(title__istartswith=query)
-
-        return queryset.order_by('-created_at')
+        ).prefetch_related('ratings').order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+
+
+def search_recipes(request):
+    recipes_list = Recipe.objects.filter(
+        is_published=True
+    ).select_related('author', 'category').prefetch_related('ratings').order_by('-created_at')
+
+    query = request.GET.get('q')
+    category_id = request.GET.get('category')
+
+    if query:
+        recipes_list = recipes_list.filter(title__icontains=query)
+
+    if category_id:
+        recipes_list = recipes_list.filter(category_id=category_id)
+
+    paginator = Paginator(recipes_list, 9)
+    page = request.GET.get('page')
+
+    try:
+        recipes = paginator.page(page)
+    except PageNotAnInteger:
+        recipes = paginator.page(1)
+    except EmptyPage:
+        recipes = paginator.page(paginator.num_pages)
+
+    context = {
+        'recipes': recipes,
+        'categories': Category.objects.all(),
+    }
+    return render(request, 'recipes/search.html', context)
 
 
 class RecipeDetailView(DetailView):
@@ -224,11 +248,8 @@ def my_recipes(request):
 
 @staff_member_required(login_url='accounts:login')
 def dashboard(request):
-    """
-    Admin dashboard showing key statistics and recent activity.
-    """
     User = get_user_model()
-    
+
     context = {
         'total_users': User.objects.count(),
         'total_recipes': Recipe.objects.count(),
@@ -238,5 +259,5 @@ def dashboard(request):
         'last_users': User.objects.select_related('profile').order_by('-date_joined')[:5],
         'last_recipes': Recipe.objects.select_related('author__profile', 'category').order_by('-created_at')[:5],
     }
-    
+
     return render(request, 'recipes/dashboard.html', context)
