@@ -37,31 +37,38 @@
         }
 
         .navbar {
-            background: rgba(108, 99, 255, 0.95);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            padding-top: 0.85rem;
-            padding-bottom: 0.85rem;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.96), rgba(87, 79, 214, 0.96));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+            padding-top: 0.9rem;
+            padding-bottom: 0.9rem;
         }
 
         .navbar-brand {
             font-weight: 700;
             font-size: 1.35rem;
             letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
         }
 
         .nav-link {
             font-weight: 500;
             color: rgba(255, 255, 255, 0.92) !important;
             transition: 0.25s ease;
-            border-radius: 10px;
-            padding: 0.55rem 0.85rem !important;
+            border-radius: 12px;
+            padding: 0.6rem 0.95rem !important;
         }
 
         .nav-link:hover,
         .nav-link:focus {
             color: #ffffff !important;
             background: rgba(255, 255, 255, 0.12);
+        }
+
+        .user-menu {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
         }
 
         .dropdown-menu {
@@ -265,6 +272,11 @@
             .nav-link {
                 margin-bottom: 0.35rem;
             }
+
+            .user-menu {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 
@@ -273,75 +285,133 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-utensils me-2"></i>Culinary Recipes
+
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <i class="fas fa-utensils me-2"></i>
+                <span>Culinary Recipes</span>
             </a>
 
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0 shadow-none"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <ul class="navbar-nav mx-auto align-items-lg-center gap-lg-1">
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">
-                            <i class="fas fa-home me-1"></i>Accueil
+                            <i class="fas fa-home me-1"></i>
+                            Accueil
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'recipes:recipe_list' %}">
-                            <i class="fas fa-book-open me-1"></i>Recettes
+                            <i class="fas fa-book-open me-1"></i>
+                            Recettes
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'recipes:recipe_list' %}">
+                            <i class="fas fa-search me-1"></i>
+                            Recherche
+                        </a>
+                    </li>
 
                     {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i>{{ user.username }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'accounts:profile' %}">
-                                        <i class="fas fa-user me-2"></i>Mon profil
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'recipes:my_recipes' %}">
-                                        <i class="fas fa-list me-2"></i>Mes recettes
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'favorites:favorites_list' %}">
-                                        <i class="fas fa-heart me-2"></i>Mes favoris
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'accounts:logout' %}">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item ms-lg-2">
-                            <a class="btn btn-light text-primary" href="{% url 'recipes:recipe_create' %}">
-                                <i class="fas fa-plus me-1"></i>Nouvelle recette
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:login' %}">
-                                <i class="fas fa-sign-in-alt me-1"></i>Connexion
-                            </a>
-                        </li>
-                        <li class="nav-item ms-lg-2">
-                            <a class="btn btn-light text-primary" href="{% url 'accounts:register' %}">
-                                <i class="fas fa-user-plus me-1"></i>Inscription
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">
+                            <i class="fas fa-chart-line me-1"></i>
+                            Dashboard
+                        </a>
+                    </li>
                     {% endif %}
+
                 </ul>
+
+                <div class="d-flex align-items-lg-center flex-column flex-lg-row gap-2">
+
+                    {% if user.is_authenticated %}
+
+                        <a class="btn btn-light text-primary"
+                           href="{% url 'recipes:recipe_create' %}">
+                            <i class="fas fa-plus me-1"></i>
+                            Nouvelle recette
+                        </a>
+
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle user-menu px-3"
+                               href="#"
+                               id="userDropdown"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i>
+                                {{ user.username }}
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{% url 'accounts:profile' %}">
+                                        <i class="fas fa-user me-2"></i>
+                                        Mon profil
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{% url 'recipes:my_recipes' %}">
+                                        <i class="fas fa-list me-2"></i>
+                                        Mes recettes
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{% url 'favorites:favorites_list' %}">
+                                        <i class="fas fa-heart me-2"></i>
+                                        Mes favoris
+                                    </a>
+                                </li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li>
+                                    <a class="dropdown-item text-danger"
+                                       href="{% url 'accounts:logout' %}">
+                                        <i class="fas fa-sign-out-alt me-2"></i>
+                                        Déconnexion
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    {% else %}
+
+                        <a class="nav-link"
+                           href="{% url 'accounts:login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>
+                            Connexion
+                        </a>
+
+                        <a class="btn btn-light text-primary"
+                           href="{% url 'accounts:register' %}">
+                            <i class="fas fa-user-plus me-1"></i>
+                            Inscription
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
             </div>
         </div>
     </nav>
@@ -377,7 +447,9 @@
                         <li class="mb-2">
                             <a href="{% url 'recipes:recipe_list' %}">Toutes les recettes</a>
                         </li>
-
+                        <li class="mb-2">
+                            <a href="{% url 'recipes:recipe_list' %}">Recherche</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
