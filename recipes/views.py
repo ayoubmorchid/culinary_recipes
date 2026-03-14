@@ -56,33 +56,39 @@ class RecipeListView(ListView):
 
 
 def search_recipes(request):
-    recipes_list = Recipe.objects.filter(
-        is_published=True
-    ).select_related('author', 'category').prefetch_related('ratings').order_by('-created_at')
+    query = request.GET.get('q', '').strip()
+    category_id = request.GET.get('category', '').strip()
 
-    query = request.GET.get('q')
-    category_id = request.GET.get('category')
+    search_submitted = bool(query or category_id)
+    recipes = None
 
-    if query:
-        recipes_list = recipes_list.filter(title__icontains=query)
+    if search_submitted:
+        recipes_list = Recipe.objects.all().select_related(
+            'author', 'category'
+        ).prefetch_related('ratings').order_by('-created_at')
 
-    if category_id:
-        recipes_list = recipes_list.filter(category_id=category_id)
+        if query:
+            recipes_list = recipes_list.filter(title__icontains=query)
 
-    paginator = Paginator(recipes_list, 9)
-    page = request.GET.get('page')
+        if category_id:
+            recipes_list = recipes_list.filter(category_id=category_id)
 
-    try:
-        recipes = paginator.page(page)
-    except PageNotAnInteger:
-        recipes = paginator.page(1)
-    except EmptyPage:
-        recipes = paginator.page(paginator.num_pages)
+        paginator = Paginator(recipes_list, 9)
+        page = request.GET.get('page')
+
+        try:
+            recipes = paginator.page(page)
+        except PageNotAnInteger:
+            recipes = paginator.page(1)
+        except EmptyPage:
+            recipes = paginator.page(paginator.num_pages)
 
     context = {
         'recipes': recipes,
         'categories': Category.objects.all(),
+        'search_submitted': search_submitted,
     }
+
     return render(request, 'recipes/search.html', context)
 
 

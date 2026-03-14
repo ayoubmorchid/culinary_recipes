@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="row">
-    <!-- Sidebar de recherche -->
     <div class="col-lg-3 mb-4">
         <div class="sidebar">
             <h5 class="sidebar-title">
@@ -53,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Zone résultats -->
     <div class="col-lg-9">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>
@@ -75,7 +73,7 @@
                 </p>
             </div>
 
-        {% elif recipes %}
+        {% elif recipes and recipes.paginator.count > 0 %}
             <div class="row">
                 {% for recipe in recipes %}
                     <div class="col-md-6 col-lg-4 mb-4">
