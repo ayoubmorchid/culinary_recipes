@@ -1,229 +1,665 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Accueil - Culinary Recipes{% endblock %}
 
-{% block content %}
-<!-- Promo CSS -->
+{% block extra_css %}
 <style>
-    .promo-card {
-        background: linear-gradient(135deg, #f8fbff 0%, #e3f2fd 100%);
-        border: 1px solid #b3d4fc;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(179, 212, 252, 0.3);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .home-wrapper {
+        padding-top: 0.5rem;
     }
-    .promo-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(179, 212, 252, 0.5);
+
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        min-height: 460px;
+        margin-bottom: 2rem;
+        background:
+
+            url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600') center/cover no-repeat;
+        box-shadow: 0 24px 55px rgba(22, 163, 74, 0.22);
+        display: flex;
+        align-items: center;
     }
-    .promo-badge {
-        background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
-        color: white;
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        border-radius: 20px;
+
+    .hero-section::before,
+    .hero-section::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        z-index: 0;
+    }
+
+    .hero-section::before {
+        width: 260px;
+        height: 260px;
+        top: -80px;
+        right: -80px;
+    }
+
+    .hero-section::after {
+        width: 180px;
+        height: 180px;
+        bottom: -60px;
+        left: -50px;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+        text-align: center;
+        width: 100%;
+        padding: 2rem;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #fff;
+        padding: 0.55rem 1rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        backdrop-filter: blur(8px);
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.08rem;
+        color: rgba(255,255,255,0.92);
+        max-width: 760px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .hero-actions .btn {
+        border-radius: 14px;
+        padding: 0.9rem 1.4rem;
         font-weight: 600;
     }
-    .promo-shadow {
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+
+    .hero-actions .btn-light {
+        color: #15803d;
     }
-    .sticky-sidebar {
-        position: sticky;
-        top: 20px;
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.4rem;
+        color: #1f2937;
     }
-    .promo-carousel .carousel-item {
-        min-height: 220px;
-        border-radius: 16px;
+
+    .section-title i {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(22, 163, 74, 0.12);
+        color: #15803d;
+        font-size: 1rem;
+    }
+
+    .promo-carousel {
+        margin-bottom: 2rem;
+    }
+
+    .promo-carousel .carousel-inner {
+        border-radius: 24px;
         overflow: hidden;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
     }
+
+    .promo-carousel .carousel-item {
+        min-height: 260px;
+    }
+
+    .promo-slide-image {
+        height: 260px;
+        width: 100%;
+        object-fit: cover;
+    }
+
     .promo-carousel .carousel-overlay {
-        background: linear-gradient(135deg, rgba(33, 150, 243, 0.85) 0%, rgba(25, 118, 210, 0.9) 100%);
     }
+
+    .promo-badge {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        font-size: 0.78rem;
+        padding: 0.42rem 0.85rem;
+        border-radius: 999px;
+        font-weight: 600;
+        backdrop-filter: blur(6px);
+    }
+
     .promo-btn {
         background: white;
-        color: #1976d2;
+        color: #15803d;
         border: none;
-        font-weight: 600;
-        padding: 10px 24px;
-        border-radius: 25px;
-        transition: all 0.2s ease;
+        font-weight: 700;
+        padding: 0.75rem 1.35rem;
+        border-radius: 999px;
+        transition: all 0.25s ease;
+        display: inline-flex;
+        align-items: center;
     }
+
     .promo-btn:hover {
-        background: #e3f2fd;
-        color: #1565c0;
-        transform: scale(1.05);
+        background: #ecfdf5;
+        color: #166534;
+        transform: translateY(-2px);
     }
-    .sidebar-promo-card {
-        background: linear-gradient(135deg, #f8fbff 0%, #e8f4fd 100%);
-        border-left: 4px solid #42a5f5;
-        border-radius: 10px;
-        padding: 16px;
-        margin-bottom: 20px;
+
+    .recipe-card {
+        border: none;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+        transition: all 0.3s ease;
+        background: #fff;
     }
-    .tip-card {
-        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-        border-left: 4px solid #66bb6a;
-        border-radius: 10px;
-        padding: 14px;
+
+    .recipe-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 22px 44px rgba(15, 23, 42, 0.14);
     }
-    .sidebar-enhanced {
-        background: white;
-        border-radius: 12px;
-        padding: 16px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-        margin-bottom: 20px;
+
+    .recipe-card .card-img-top {
+        height: 230px;
+        object-fit: cover;
     }
+
+    .recipe-card .card-body {
+        padding: 1.2rem;
+    }
+
+    .recipe-card .card-footer {
+        background: transparent;
+        border-top: 1px solid #f1f5f9;
+        padding: 1rem 1.2rem 1.2rem;
+    }
+
+    .category-badge {
+        display: inline-block;
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 0.78rem;
+        padding: 0.42rem 0.85rem;
+        border-radius: 999px;
+        font-weight: 700;
+    }
+
+    .recipe-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-top: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .recipe-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.8rem;
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    .rating-stars {
+        color: #f59e0b;
+        font-weight: 700;
+    }
+
     .wide-promo {
-        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-        border: 2px solid #64b5f6;
-        border-radius: 16px;
-        padding: 30px;
-        text-align: center;
-        margin: 30px 0;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border: 1px solid #bbf7d0;
+        border-radius: 24px;
+        padding: 2rem;
+        margin: 1rem 0 2.5rem;
+        box-shadow: 0 12px 28px rgba(22, 163, 74, 0.08);
     }
+
+    .wide-promo h4 {
+        font-weight: 800;
+        color: #14532d;
+    }
+
+    .wide-promo p {
+        color: #4b5563;
+    }
+
+    .sticky-sidebar {
+        position: sticky;
+        top: 100px;
+    }
+
+    .sidebar-block {
+        background: #fff;
+        border-radius: 22px;
+        padding: 1.2rem;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.07);
+        margin-bottom: 1.4rem;
+    }
+
+    .sidebar-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid #eef2f7;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+    }
+
+    .sidebar-promo-card {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border: 1px solid #bbf7d0;
+        border-radius: 22px;
+        padding: 1rem;
+        box-shadow: 0 12px 26px rgba(22, 163, 74, 0.08);
+        margin-bottom: 1.4rem;
+    }
+
+    .sidebar-promo-card img {
+        border-radius: 14px;
+        height: 160px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .list-group.custom-category-list {
+        gap: 0.6rem;
+    }
+
+    .list-group.custom-category-list .list-group-item {
+        border: 1px solid #ecf0f4;
+        border-radius: 14px;
+        padding: 0.85rem 1rem;
+        transition: all 0.25s ease;
+    }
+
+    .list-group.custom-category-list .list-group-item:hover {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+        transform: translateX(4px);
+    }
+
+    .list-group.custom-category-list .badge {
+        background: linear-gradient(135deg, #15803d, #16a34a) !important;
+    }
+
+    .sidebar-link {
+        color: #4b5563;
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 0.2rem;
+        border-bottom: 1px solid #f3f4f6;
+        transition: all 0.25s ease;
+        font-weight: 500;
+    }
+
+    .sidebar-link:last-child {
+        border-bottom: none;
+    }
+
+    .sidebar-link:hover {
+        color: #15803d;
+        transform: translateX(4px);
+    }
+
+    .tip-card {
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        border: 1px solid #fde68a;
+        border-radius: 22px;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 12px 24px rgba(245, 158, 11, 0.08);
+    }
+
+    .tip-link {
+        display: inline-flex;
+        align-items: center;
+        color: #b45309;
+        font-weight: 700;
+        text-decoration: none;
+        margin-top: 0.2rem;
+    }
+
+    .tip-link:hover {
+        color: #92400e;
+    }
+
+    .empty-recipes {
+        background: #fff;
+        border-radius: 24px;
+        padding: 3rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .empty-recipes i {
+        font-size: 3.5rem;
+        color: #94a3b8;
+        margin-bottom: 1rem;
+    }
+
     @media (max-width: 991px) {
         .sticky-sidebar {
             position: static;
+            top: auto;
+        }
+
+        .hero-section {
+            min-height: 400px;
+        }
+
+        .hero-title {
+            font-size: 2.3rem;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .hero-section {
+            min-height: 360px;
+        }
+
+        .hero-title {
+            font-size: 1.9rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.98rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+        }
+
+        .promo-slide-image {
+            height: 230px;
+        }
+
+        .promo-carousel .carousel-item {
+            min-height: 230px;
+        }
+
+        .wide-promo {
+            padding: 1.4rem;
         }
     }
 </style>
+{% endblock %}
 
-<!-- Hero Section -->
-<div class="card bg-dark text-white mb-5 fade-in" style="border-radius: 20px; overflow: hidden;">
-    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600" class="card-img" alt="Cuisine" style="opacity: 0.4;">
-    <div class="card-img-overlay d-flex align-items-center justify-content-center text-center">
-        <div>
-            <h1 class="display-4 fw-bold">
-                <i class="fas fa-utensils me-3"></i>Culinary Recipes
+{% block content %}
+<div class="home-wrapper">
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-leaf"></i>
+                Inspiration culinaire moderne
+            </div>
+
+            <h1 class="hero-title">
+                <i class="fas fa-utensils me-2"></i>Culinary Recipes
             </h1>
-            <p class="lead">Découvrez, partagez et expérimentez des recettes de cuisine exceptionnelles</p>
-            <a href="{% url 'recipes:recipe_list' %}" class="btn btn-primary btn-lg mt-3">
-                <i class="fas fa-book me-2"></i>Parcourir les recettes
-            </a>
-        </div>
-    </div>
-</div>
 
-<!-- Promotions Carousel -->
-<div id="promoCarousel" class="carousel slide mb-5 promo-carousel" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <p class="hero-subtitle">
+                Découvrez, partagez et expérimentez des recettes savoureuses dans une plateforme moderne,
+                élégante et pensée pour les passionnés de cuisine.
+            </p>
+
+            <div class="hero-actions d-flex justify-content-center flex-wrap gap-3">
+                <a href="{% url 'recipes:recipe_list' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-book me-2"></i>Parcourir les recettes
+                </a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Créer une recette
+                </a>
+                {% else %}
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>S'inscrire
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    <div class="carousel-inner rounded-4">
-        <!-- Slide 1 -->
-        <div class="carousel-item active" data-bs-interval="5000">
-            <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&h=400" class="d-block w-100" alt="Recettesseasonnières" style="height: 220px; object-fit: cover;">
-                <div class="carousel-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                    <div class="text-center text-white px-4">
-                        <span class="promo-badge mb-2 d-inline-block">
-                            <i class="fas fa-fire me-1"></i>Nouveau
-                        </span>
-                        <h3 class="fw-bold mb-2">Découvrez les recettes de saison</h3>
-                        <p class="mb-3 d-none d-md-block">Des plats frais et délicieux pour toutes les occasions</p>
-                        <a href="{% url 'recipes:recipe_list' %}" class="promo-btn text-decoration-none">
-                            <i class="fas fa-arrow-right me-2"></i>Explorer
-                        </a>
-                    </div>
-                </div>
-            </div>
+
+    <div id="promoCarousel" class="carousel slide promo-carousel" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
-        <!-- Slide 2 -->
-        <div class="carousel-item" data-bs-interval="5000">
-            <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=1200&h=400" class="d-block w-100" alt="Recherche" style="height: 220px; object-fit: cover;">
-                <div class="carousel-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                    <div class="text-center text-white px-4">
-                        <span class="promo-badge mb-2 d-inline-block">
-                            <i class="fas fa-search me-1"></i>Recherche
-                        </span>
-                        <h3 class="fw-bold mb-2">Trouvez votre recette idéale</h3>
-                        <p class="mb-3 d-none d-md-block">Utilisez nos filtres avancés pour une recherche précise</p>
-                            <i class="fas fa-search me-2"></i>Rechercher
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Slide 3 -->
-        <div class="carousel-item" data-bs-interval="5000">
-            <div class="position-relative">
-                <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&h=400" class="d-block w-100" alt="Créer" style="height: 220px; object-fit: cover;">
-                <div class="carousel-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                    <div class="text-center text-white px-4">
-                        {% if user.is_authenticated %}
-                            <span class="promo-badge mb-2 d-inline-block">
-                                <i class="fas fa-plus me-1"></i>Créer
+
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&h=400" class="promo-slide-image" alt="Recettes saisonnières">
+                    <div class="carousel-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                        <div class="text-center text-white px-4">
+                            <span class="promo-badge mb-3 d-inline-block">
+                                <i class="fas fa-fire me-1"></i>Nouveau
                             </span>
-                            <h3 class="fw-bold mb-2">Partagez vos créations</h3>
-                            <p class="mb-3 d-none d-md-block">Rejoignez notre communauté de passionnés</p>
-                            <a href="{% url 'recipes:recipe_create' %}" class="promo-btn text-decoration-none">
+                            <h3 class="fw-bold mb-2">Découvrez les recettes de saison</h3>
+                            <p class="mb-3 d-none d-md-block">Des plats frais et délicieux pour toutes les occasions.</p>
+                            <a href="{% url 'recipes:recipe_list' %}" class="promo-btn text-decoration-none">
+                                <i class="fas fa-arrow-right me-2"></i>Explorer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-item" data-bs-interval="5000">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=1200&h=400" class="promo-slide-image" alt="Recherche">
+                    <div class="carousel-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                        <div class="text-center text-white px-4">
+                            <span class="promo-badge mb-3 d-inline-block">
+                                <i class="fas fa-search me-1"></i>Recherche
+                            </span>
+                            <h3 class="fw-bold mb-2">Trouvez votre recette idéale</h3>
+                            <p class="mb-3 d-none d-md-block">Utilisez nos filtres pour découvrir rapidement le plat parfait.</p>
+                            <a href="{% url 'recipes:search' %}" class="promo-btn text-decoration-none">
+                                <i class="fas fa-search me-2"></i>Rechercher
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-item" data-bs-interval="5000">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&h=400" class="promo-slide-image" alt="Créer">
+                    <div class="carousel-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                        <div class="text-center text-white px-4">
+                            {% if user.is_authenticated %}
+                                <span class="promo-badge mb-3 d-inline-block">
+                                    <i class="fas fa-plus me-1"></i>Créer
+                                </span>
+                                <h3 class="fw-bold mb-2">Partagez vos créations</h3>
+                                <p class="mb-3 d-none d-md-block">Rejoignez notre communauté de passionnés de cuisine.</p>
+                                <a href="{% url 'recipes:recipe_create' %}" class="promo-btn text-decoration-none">
+                                    <i class="fas fa-plus me-2"></i>Créer une recette
+                                </a>
+                            {% else %}
+                                <span class="promo-badge mb-3 d-inline-block">
+                                    <i class="fas fa-user-plus me-1"></i>Rejoindre
+                                </span>
+                                <h3 class="fw-bold mb-2">Rejoignez la communauté</h3>
+                                <p class="mb-3 d-none d-md-block">Créez, partagez et sauvegardez vos recettes préférées.</p>
+                                <a href="{% url 'accounts:register' %}" class="promo-btn text-decoration-none">
+                                    <i class="fas fa-user-plus me-2"></i>S'inscrire
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-9">
+            <section class="mb-5">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Dernières Recettes
+                </h2>
+
+                {% if latest_recipes %}
+                    <div class="row">
+                        {% for recipe in latest_recipes %}
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card recipe-card h-100">
+                                    {% if recipe.image %}
+                                        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                                    {% else %}
+                                        <img src="https://via.placeholder.com/400x300?text=Recette" class="card-img-top" alt="{{ recipe.title }}">
+                                    {% endif %}
+
+                                    <div class="card-body">
+                                        <span class="category-badge">{{ recipe.category.name|default:"Sans catégorie" }}</span>
+                                        <h5 class="recipe-title">{{ recipe.title }}</h5>
+                                        <p class="card-text text-muted">{{ recipe.description|truncatewords:15 }}</p>
+
+                                        <div class="recipe-meta">
+                                            <small>
+                                                <i class="fas fa-clock me-1"></i>{{ recipe.preparation_time }} min
+                                            </small>
+                                            <span class="rating-stars">
+                                                {% if recipe.average_rating > 0 %}
+                                                    <i class="fas fa-star"></i> {{ recipe.average_rating }}
+                                                {% else %}
+                                                    <i class="far fa-star"></i> 0
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <a href="{{ recipe.get_absolute_url }}" class="btn btn-primary w-100">
+                                            <i class="fas fa-eye me-2"></i>Voir la recette
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-recipes">
+                        <i class="fas fa-utensils"></i>
+                        <h4>Aucune recette pour le moment</h4>
+                        <p class="text-muted">Soyez le premier à publier une recette.</p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Créer une recette
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </section>
+
+            <div class="wide-promo">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-8 text-center text-md-start">
+                        <h4 class="mb-2">
+                            <i class="fas fa-star text-warning me-2"></i>
+                            {% if user.is_authenticated %}
+                                Vous avez une recette à partager ?
+                            {% else %}
+                                Rejoignez notre communauté culinaire !
+                            {% endif %}
+                        </h4>
+
+                        <p class="mb-0">
+                            {% if user.is_authenticated %}
+                                Partagez vos meilleures recettes avec une communauté de passionnés.
+                            {% else %}
+                                Créez un compte pour sauvegarder et découvrir vos recettes préférées.
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary btn-lg">
                                 <i class="fas fa-plus me-2"></i>Créer une recette
                             </a>
                         {% else %}
-                            <span class="promo-badge mb-2 d-inline-block">
-                                <i class="fas fa-user-plus me-1"></i>Rejoindre
-                            </span>
-                            <h3 class="fw-bold mb-2">Rejoignez la communauté</h3>
-                            <p class="mb-3 d-none d-md-block">Créez, partagez et savez vos recettes préférées</p>
-                            <a href="{% url 'accounts:register' %}" class="promo-btn text-decoration-none">
+                            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
                                 <i class="fas fa-user-plus me-2"></i>S'inscrire
                             </a>
                         {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Précédent</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Suivant</span>
-    </button>
-</div>
 
-<div class="row">
-    <!-- Main Content -->
-    <div class="col-lg-9">
-        <!-- Latest Recipes -->
-        <section class="mb-5">
-            <h2 class="mb-4">
-                <i class="fas fa-clock me-2"></i>Dernières Recettes
-            </h2>
-            {% if latest_recipes %}
+            {% if top_rated_recipes %}
+            <section class="mb-5">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Recettes les mieux notées
+                </h2>
+
                 <div class="row">
-                    {% for recipe in latest_recipes %}
+                    {% for recipe in top_rated_recipes %}
                         <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card h-100 fade-in">
+                            <div class="card recipe-card h-100">
                                 {% if recipe.image %}
                                     <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
                                 {% else %}
                                     <img src="https://via.placeholder.com/400x300?text=Recette" class="card-img-top" alt="{{ recipe.title }}">
                                 {% endif %}
+
                                 <div class="card-body">
-                                    <span class="category-badge mb-2">{{ recipe.category.name|default:"Sans catégorie" }}</span>
-                                    <h5 class="card-title mt-2">{{ recipe.title }}</h5>
+                                    <span class="category-badge">{{ recipe.category.name|default:"Sans catégorie" }}</span>
+                                    <h5 class="recipe-title">{{ recipe.title }}</h5>
                                     <p class="card-text text-muted">{{ recipe.description|truncatewords:15 }}</p>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">
+
+                                    <div class="recipe-meta">
+                                        <small>
                                             <i class="fas fa-clock me-1"></i>{{ recipe.preparation_time }} min
                                         </small>
                                         <span class="rating-stars">
-                                            {% if recipe.average_rating > 0 %}
-                                                <i class="fas fa-star"></i> {{ recipe.average_rating }}
-                                            {% else %}
-                                                <i class="far fa-star"></i> 0
-                                            {% endif %}
+                                            <i class="fas fa-star"></i> {{ recipe.average_rating }}
                                         </span>
                                     </div>
                                 </div>
-                                <div class="card-footer bg-transparent">
+
+                                <div class="card-footer">
                                     <a href="{{ recipe.get_absolute_url }}" class="btn btn-primary w-100">
                                         <i class="fas fa-eye me-2"></i>Voir la recette
                                     </a>
@@ -232,165 +668,89 @@
                         </div>
                     {% endfor %}
                 </div>
-            {% else %}
-                <div class="text-center py-5">
-                    <i class="fas fa-utensils fa-4x text-muted mb-3"></i>
-                    <h4>Aucune recette pour le moment</h4>
-                    <p class="text-muted">Soyez le premier à publier une recette!</p>
+            </section>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-3">
+            <div class="sticky-sidebar">
+                <div class="sidebar-promo-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="promo-badge">
+                            <i class="fas fa-ad me-1"></i>Sponsorisé
+                        </span>
+                    </div>
+
+                    <img src="https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=400&h=150" class="img-fluid mb-3" alt="Pub">
+
+                    <h6 class="fw-bold mb-2">Cuisinez comme un chef</h6>
+                    <p class="small text-muted mb-3">Découvrez des idées et accessoires pour sublimer vos plats.</p>
+
+                    <a href="{% url 'recipes:recipe_list' %}" class="btn btn-outline-success btn-sm w-100">
+                        <i class="fas fa-shopping-basket me-2"></i>Découvrir
+                    </a>
+                </div>
+
+                <div class="sidebar-block">
+                    <h5 class="sidebar-title">
+                        <i class="fas fa-list"></i>Catégories
+                    </h5>
+
+                    <div class="list-group custom-category-list">
+                        {% for category in categories %}
+                            <a href="{% url 'recipes:category' category.slug %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                {{ category.name }}
+                                <span class="badge rounded-pill">{{ category.recipe_count }}</span>
+                            </a>
+                        {% empty %}
+                            <p class="text-muted mb-0">Aucune catégorie</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="sidebar-block">
+                    <h5 class="sidebar-title">
+                        <i class="fas fa-link"></i>Liens rapides
+                    </h5>
+
+                    <a href="{% url 'recipes:recipe_list' %}" class="sidebar-link">
+                        <i class="fas fa-book me-2"></i>Toutes les recettes
+                    </a>
+
+                    <a href="{% url 'recipes:search' %}" class="sidebar-link">
+                        <i class="fas fa-search me-2"></i>Recherche avancée
+                    </a>
+
                     {% if user.is_authenticated %}
-                        <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary">
+                        <a href="{% url 'recipes:recipe_create' %}" class="sidebar-link">
                             <i class="fas fa-plus me-2"></i>Créer une recette
                         </a>
-                    {% endif %}
-                </div>
-            {% endif %}
-        </section>
-        
-        <!-- Wide Promo Banner Between Sections -->
-        <div class="wide-promo promo-shadow">
-            <div class="row align-items-center">
-                <div class="col-md-8 text-center text-md-start">
-                    <h4 class="fw-bold text-dark mb-2">
-                        <i class="fas fa-star text-warning me-2"></i>
-                        {% if user.is_authenticated %}
-                            Vous avez une recette à partager ?
-                        {% else %}
-                            Rejoignez notre communauté culinaire !
-                        {% endif %}
-                    </h4>
-                    <p class="text-muted mb-0">
-                        {% if user.is_authenticated %}
-                            Partagez vos meilleures recettes avec des milliers de passionnés.
-                        {% else %}
-                            Créez un compte pour sauvegarder vos recettes préférées.
-                        {% endif %}
-                    </p>
-                </div>
-                <div class="col-md-4 text-center mt-3 mt-md-0">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'recipes:recipe_create' %}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-plus me-2"></i>Créer une recette
+                        <a href="{% url 'favorites:favorites_list' %}" class="sidebar-link">
+                            <i class="fas fa-heart me-2"></i>Mes favoris
                         </a>
                     {% else %}
-                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+                        <a href="{% url 'accounts:register' %}" class="sidebar-link">
                             <i class="fas fa-user-plus me-2"></i>S'inscrire
                         </a>
                     {% endif %}
                 </div>
-            </div>
-        </div>
-        
-        <!-- Top Rated Recipes -->
-        {% if top_rated_recipes %}
-        <section class="mb-5">
-            <h2 class="mb-4">
-                <i class="fas fa-star me-2"></i>Recettes les mieux notées
-            </h2>
-            <div class="row">
-                {% for recipe in top_rated_recipes %}
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100 fade-in">
-                            {% if recipe.image %}
-                                <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
-                            {% else %}
-                                <img src="https://via.placeholder.com/400x300?text=Recette" class="card-img-top" alt="{{ recipe.title }}">
-                            {% endif %}
-                            <div class="card-body">
-                                <span class="category-badge mb-2">{{ recipe.category.name|default:"Sans catégorie" }}</span>
-                                <h5 class="card-title mt-2">{{ recipe.title }}</h5>
-                                <p class="card-text text-muted">{{ recipe.description|truncatewords:15 }}</p>
-                                
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">
-                                        <i class="fas fa-clock me-1"></i>{{ recipe.preparation_time }} min
-                                    </small>
-                                    <span class="rating-stars">
-                                        <i class="fas fa-star"></i> {{ recipe.average_rating }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-transparent">
-                                <a href="{{ recipe.get_absolute_url }}" class="btn btn-primary w-100">
-                                    <i class="fas fa-eye me-2"></i>Voir la recette
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-    </div>
-    
-    <!-- Sidebar -->
-    <div class="col-lg-3">
-        <!-- Sponsorisé Card -->
-        <div class="sidebar-promo-card promo-shadow mb-4">
-            <div class="d-flex align-items-center mb-3">
-                <span class="promo-badge">
-                    <i class="fas fa-ad me-1"></i>Sponsorisé
-                </span>
-            </div>
-            <img src="https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=400&h=150" class="img-fluid rounded mb-3" alt="Pub" style="border-radius: 8px;">
-            <h6 class="fw-bold mb-2">Cuisinez comme un chef</h6>
-            <p class="small text-muted mb-3">Découvrez nos ustensiles professionnels pour sublimer vos plats.</p>
-            <a href="{% url 'recipes:recipe_list' %}" class="btn btn-outline-primary btn-sm w-100">
-                <i class="fas fa-shopping-basket me-2"></i>Découvrir
-            </a>
-        </div>
-        
-        <!-- Categories -->
-        <div class="sidebar sidebar-enhanced">
-            <h5 class="sidebar-title">
-                <i class="fas fa-list me-2"></i>Catégories
-            </h5>
-            <div class="list-group">
-                {% for category in categories %}
-                    <a href="{% url 'recipes:category' category.slug %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        {{ category.name }}
-                        <span class="badge bg-primary rounded-pill">{{ category.recipe_count }}</span>
-                    </a>
-                {% empty %}
-                    <p class="text-muted">Aucune catégorie</p>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <!-- Quick Links -->
-        <div class="sidebar sidebar-enhanced">
-            <h5 class="sidebar-title">
-                <i class="fas fa-link me-2"></i>Liens rapides
-            </h5>
 
-            </a>
-            <a href="{% url 'recipes:recipe_list' %}" class="sidebar-link">
-                <i class="fas fa-book me-2"></i>Toutes les recettes
-            </a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'recipes:recipe_create' %}" class="sidebar-link">
-                    <i class="fas fa-plus me-2"></i>Créer une recette
-                </a>
-                <a href="{% url 'favorites:favorites_list' %}" class="sidebar-link">
-                    <i class="fas fa-heart me-2"></i>Mes favoris
-                </a>
-            {% else %}
-                <a href="{% url 'accounts:register' %}" class="sidebar-link">
-                    <i class="fas fa-user-plus me-2"></i>S'inscrire
-                </a>
-            {% endif %}
-        </div>
-        
-        <!-- Astuce du jour / Promo Card -->
-        <div class="tip-card promo-shadow">
-            <div class="d-flex align-items-center mb-2">
-                <i class="fas fa-lightbulb text-success me-2"></i>
-                <span class="fw-bold text-success">Astuce du jour</span>
+                <div class="tip-card">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        <span class="fw-bold text-warning">Astuce du jour</span>
+                    </div>
+
+                    <p class="small mb-2">
+                        Utilisez des ingrédients frais de saison pour des recettes plus savoureuses et plus économiques.
+                    </p>
+
+                    <a href="{% url 'recipes:recipe_list' %}" class="tip-link">
+                        <i class="fas fa-arrow-right me-1"></i>Voir les recettes
+                    </a>
+                </div>
             </div>
-            <p class="small mb-2">Utilisez des ingrédients frais de saison pour des recettes plus savoureuses et économiques !</p>
-                <i class="fas fa-arrow-right me-1"></i>Voir les recettes saisonnières
-            </a>
         </div>
     </div>
 </div>
 {% endblock %}
-

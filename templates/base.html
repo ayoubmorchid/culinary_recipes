@@ -1,464 +1,704 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Culinary Recipes - Gestion de Recettes{% endblock %}</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        :root {
-            --primary-color: #6c63ff;
-            --primary-dark: #574fd6;
-            --accent-color: #ff7a59;
-            --text-color: #2d3748;
-            --muted-color: #718096;
-            --light-bg: #f8f9fc;
-            --white: #ffffff;
-            --border-color: #e9ecef;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --hover-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
-            --radius: 18px;
-        }
+<title>{% block title %}Culinary Recipes{% endblock %}</title>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--light-bg);
-            color: var(--text-color);
-            min-height: 100vh;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        a {
-            text-decoration: none;
-        }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-        .navbar {
-            background: linear-gradient(135deg, rgba(108, 99, 255, 0.96), rgba(87, 79, 214, 0.96));
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
-            padding-top: 0.9rem;
-            padding-bottom: 0.9rem;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.35rem;
-            letter-spacing: 0.3px;
-            display: flex;
-            align-items: center;
-        }
 
-        .nav-link {
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.92) !important;
-            transition: 0.25s ease;
-            border-radius: 12px;
-            padding: 0.6rem 0.95rem !important;
-        }
+<style>
 
-        .nav-link:hover,
-        .nav-link:focus {
-            color: #ffffff !important;
-            background: rgba(255, 255, 255, 0.12);
-        }
+:root{
 
-        .user-menu {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-        }
+--primary:#16a34a;
+--primary-dark:#15803d;
 
-        .dropdown-menu {
-            border: none;
-            border-radius: 14px;
-            box-shadow: var(--card-shadow);
-            padding: 0.6rem;
-        }
+--secondary:#f59e0b;
 
-        .dropdown-item {
-            border-radius: 10px;
-            padding: 0.65rem 0.9rem;
-            transition: 0.25s ease;
-        }
+--text:#1f2937;
+--muted:#6b7280;
 
-        .dropdown-item:hover {
-            background: #f3f4ff;
-            color: var(--primary-dark);
-        }
+--bg:#f9fafb;
+--white:#ffffff;
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            border: none;
-            border-radius: 12px;
-            padding: 0.7rem 1.2rem;
-            font-weight: 600;
-            transition: 0.25s ease;
-        }
+--footer:#0f172a;
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.25);
-        }
+--border:#e5e7eb;
 
-        .btn-light.text-primary {
-            border-radius: 12px;
-            font-weight: 600;
-            padding: 0.65rem 1rem;
-        }
+--radius:16px;
 
-        .card {
-            border: none;
-            border-radius: var(--radius);
-            box-shadow: var(--card-shadow);
-            transition: 0.3s ease;
-            overflow: hidden;
-            background: var(--white);
-        }
+--shadow-sm:0 4px 12px rgba(0,0,0,0.06);
+--shadow-md:0 12px 30px rgba(0,0,0,0.12);
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--hover-shadow);
-        }
+}
 
-        .card-img-top {
-            height: 220px;
-            object-fit: cover;
-        }
+/* BODY */
 
-        .category-badge {
-            display: inline-block;
-            background: #eef2ff;
-            color: var(--primary-dark);
-            font-size: 0.82rem;
-            font-weight: 600;
-            padding: 0.4rem 0.9rem;
-            border-radius: 999px;
-        }
+body{
 
-        .rating-stars {
-            color: #f6b93b;
-        }
+font-family:'Poppins',sans-serif;
 
-        .sidebar {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--card-shadow);
-            padding: 1.4rem;
-        }
+background:var(--bg);
 
-        .sidebar-title {
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            padding-bottom: 0.7rem;
-            border-bottom: 2px solid #ecebff;
-        }
+color:var(--text);
 
-        .sidebar-link {
-            color: var(--muted-color);
-            display: block;
-            padding: 0.55rem 0;
-            transition: 0.25s ease;
-        }
+min-height:100vh;
 
-        .sidebar-link:hover {
-            color: var(--primary-color);
-            padding-left: 6px;
-        }
+}
 
-        .recipe-image {
-            border-radius: var(--radius);
-            box-shadow: var(--card-shadow);
-        }
+a{
 
-        .ingredient-list li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
+text-decoration:none;
 
-        .ingredient-list li:last-child {
-            border-bottom: none;
-        }
+transition:0.25s;
 
-        .step-number {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
+}
 
-        .page-link {
-            color: var(--primary-color);
-            border-radius: 10px !important;
-            margin: 0 3px;
-            border: 1px solid var(--border-color);
-        }
+/* NAVBAR */
 
-        .page-item.active .page-link {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            border-color: var(--primary-color);
-        }
+.navbar{
 
-        .alert {
-            border: none;
-            border-radius: 14px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-        }
+background:linear-gradient(135deg,#15803d,#16a34a);
 
-        footer {
-            background: linear-gradient(135deg, #5f59e1, #4c46c9);
-            color: white;
-            margin-top: 60px;
-        }
+box-shadow:0 6px 20px rgba(0,0,0,0.15);
 
-        footer h5 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
+padding:14px 0;
 
-        footer p,
-        footer a {
-            color: rgba(255, 255, 255, 0.9);
-        }
+}
 
-        footer a:hover {
-            color: #ffffff;
-        }
+.navbar-brand{
 
-        .back-to-top {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--card-shadow);
-            transition: 0.25s ease;
-            z-index: 999;
-        }
+font-weight:700;
 
-        .back-to-top:hover {
-            color: #fff;
-            transform: translateY(-3px);
-            box-shadow: var(--hover-shadow);
-        }
+font-size:1.35rem;
 
-        .main-content {
-            min-height: 70vh;
-        }
+letter-spacing:0.3px;
 
-        @media (max-width: 991px) {
-            .navbar .btn {
-                margin-top: 0.75rem;
-                margin-left: 0 !important;
-                width: 100%;
-            }
+}
 
-            .nav-link {
-                margin-bottom: 0.35rem;
-            }
+.nav-link{
 
-            .user-menu {
-                width: 100%;
-                text-align: center;
-            }
-        }
-    </style>
+color:white!important;
 
-    {% block extra_css %}{% endblock %}
+font-weight:500;
+
+border-radius:10px;
+
+padding:7px 14px!important;
+
+}
+
+.nav-link:hover{
+
+background:rgba(255,255,255,0.18);
+
+}
+
+/* BUTTON */
+
+.btn-primary{
+
+background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+
+border:none;
+
+border-radius:12px;
+
+padding:8px 18px;
+
+font-weight:600;
+
+}
+
+.btn-primary:hover{
+
+transform:translateY(-2px);
+
+box-shadow:var(--shadow-md);
+
+}
+
+/* CARD */
+
+.card{
+
+border:none;
+
+border-radius:var(--radius);
+
+box-shadow:var(--shadow-sm);
+
+transition:0.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-4px);
+
+box-shadow:var(--shadow-md);
+
+}
+
+.card-img-top{
+
+height:220px;
+
+object-fit:cover;
+
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+background:white;
+
+border-radius:var(--radius);
+
+box-shadow:var(--shadow-sm);
+
+padding:22px;
+
+}
+
+.sidebar-title{
+
+font-weight:600;
+
+margin-bottom:14px;
+
+border-bottom:2px solid #f1f5f9;
+
+padding-bottom:8px;
+
+}
+
+/* BADGE */
+
+.category-badge{
+
+background:#dcfce7;
+
+color:#15803d;
+
+font-size:13px;
+
+padding:5px 12px;
+
+border-radius:999px;
+
+font-weight:600;
+
+}
+
+/* PAGINATION */
+
+.page-link{
+
+border-radius:10px!important;
+
+margin:0 3px;
+
+border:1px solid var(--border);
+
+color:var(--primary);
+
+}
+
+.page-item.active .page-link{
+
+background:var(--primary);
+
+border-color:var(--primary);
+
+}
+
+/* ALERT */
+
+.alert{
+
+border:none;
+
+border-radius:12px;
+
+box-shadow:var(--shadow-sm);
+
+}
+
+/* FOOTER */
+
+footer{
+
+background:var(--footer);
+
+color:white;
+
+margin-top:80px;
+
+padding:60px 0;
+
+}
+
+footer h5{
+
+font-weight:600;
+
+margin-bottom:16px;
+
+}
+
+footer p{
+
+color:#cbd5f5;
+
+}
+
+footer a{
+
+color:#cbd5f5;
+
+transition:0.25s;
+
+}
+
+footer a:hover{
+
+color:white;
+
+padding-left:5px;
+
+}
+
+footer ul{
+
+padding:0;
+
+list-style:none;
+
+}
+
+footer li{
+
+margin-bottom:8px;
+
+}
+
+.footer-bottom{
+
+border-top:1px solid rgba(255,255,255,0.1);
+
+margin-top:30px;
+
+padding-top:20px;
+
+text-align:center;
+
+color:#94a3b8;
+
+}
+
+/* BACK TO TOP */
+
+.back-to-top{
+
+position:fixed;
+
+bottom:25px;
+
+right:25px;
+
+width:45px;
+
+height:45px;
+
+border-radius:50%;
+
+background:var(--primary);
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+box-shadow:var(--shadow-md);
+
+}
+
+.back-to-top:hover{
+
+transform:translateY(-3px);
+
+}
+
+.main-content{
+
+min-height:70vh;
+
+}
+
+</style>
+
+{% block extra_css %}{% endblock %}
+
 </head>
+
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
 
-            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                <i class="fas fa-utensils me-2"></i>
-                <span>Culinary Recipes</span>
-            </a>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
 
-            <button class="navbar-toggler border-0 shadow-none"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<div class="container">
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto align-items-lg-center gap-lg-1">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">
-                            <i class="fas fa-home me-1"></i>
-                            Accueil
-                        </a>
-                    </li>
+<a class="navbar-brand" href="{% url 'home' %}">
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'recipes:recipe_list' %}">
-                            <i class="fas fa-book-open me-1"></i>
-                            Recettes
-                        </a>
-                    </li>
+<i class="fas fa-utensils me-2"></i>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'recipes:search' %}">
-                            <i class="fas fa-search me-1"></i>
-                            Recherche
-                        </a>
-                    </li>
+Culinary Recipes
 
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">
-                            <i class="fas fa-chart-line me-1"></i>
-                            Dashboard
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
+</a>
 
-                <div class="d-flex align-items-lg-center flex-column flex-lg-row gap-2">
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-light text-primary" href="{% url 'recipes:recipe_create' %}">
-                            <i class="fas fa-plus me-1"></i>
-                            Nouvelle recette
-                        </a>
+<button class="navbar-toggler border-0 shadow-none"
 
-                        <div class="dropdown">
-                            <a class="nav-link dropdown-toggle user-menu px-3"
-                               href="#"
-                               id="userDropdown"
-                               role="button"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i>
-                                {{ user.username }}
-                            </a>
+type="button"
 
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'accounts:profile' %}">
-                                        <i class="fas fa-user me-2"></i>
-                                        Mon profil
-                                    </a>
-                                </li>
+data-bs-toggle="collapse"
 
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'recipes:my_recipes' %}">
-                                        <i class="fas fa-list me-2"></i>
-                                        Mes recettes
-                                    </a>
-                                </li>
+data-bs-target="#navbarNav">
 
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'favorites:favorites_list' %}">
-                                        <i class="fas fa-heart me-2"></i>
-                                        Mes favoris
-                                    </a>
-                                </li>
+<span class="navbar-toggler-icon"></span>
 
-                                <li><hr class="dropdown-divider"></li>
+</button>
 
-                                <li>
-                                    <a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">
-                                        <i class="fas fa-sign-out-alt me-2"></i>
-                                        Déconnexion
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    {% else %}
-                        <a class="nav-link" href="{% url 'accounts:login' %}">
-                            <i class="fas fa-sign-in-alt me-1"></i>
-                            Connexion
-                        </a>
+<div class="collapse navbar-collapse" id="navbarNav">
 
-                        <a class="btn btn-light text-primary" href="{% url 'accounts:register' %}">
-                            <i class="fas fa-user-plus me-1"></i>
-                            Inscription
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </nav>
+<ul class="navbar-nav mx-auto">
 
-    {% if messages %}
-        <div class="container mt-4">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+<li class="nav-item">
 
-    <main class="container my-4 main-content">
-        {% block content %}{% endblock %}
-    </main>
+<a class="nav-link" href="{% url 'home' %}">
 
-    <footer class="py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5>Culinary Recipes</h5>
-                    <p>Une plateforme simple et moderne pour partager et découvrir vos recettes préférées.</p>
-                </div>
+<i class="fas fa-home me-1"></i>
 
-                <div class="col-md-4">
-                    <h5>Liens rapides</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2">
-                            <a href="{% url 'home' %}">Accueil</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'recipes:recipe_list' %}">Toutes les recettes</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'recipes:search' %}">Recherche</a>
-                        </li>
-                    </ul>
-                </div>
+Accueil
 
-                <div class="col-md-4">
-                    <h5>Contact</h5>
-                    <p class="mb-0">
-                        <i class="fas fa-envelope me-2"></i>contact@culinaryrecipes.com
-                    </p>
-                </div>
-            </div>
+</a>
 
-            <hr class="border-light opacity-25 my-4">
+</li>
 
-            <div class="text-center">
-                <p class="mb-0">&copy; 2024 Culinary Recipes. Tous droits réservés.</p>
-            </div>
-        </div>
-    </footer>
+<li class="nav-item">
 
-    <a href="#" class="back-to-top" aria-label="Retour en haut">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+<a class="nav-link" href="{% url 'recipes:recipe_list' %}">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {% block extra_js %}{% endblock %}
+<i class="fas fa-book-open me-1"></i>
+
+Recettes
+
+</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link" href="{% url 'recipes:search' %}">
+
+<i class="fas fa-search me-1"></i>
+
+Recherche
+
+</a>
+
+</li>
+
+{% if user.is_authenticated %}
+
+<li class="nav-item">
+
+<a class="nav-link" href="{% url 'dashboard' %}">
+
+<i class="fas fa-chart-line me-1"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+{% endif %}
+
+</ul>
+
+
+<div class="d-flex align-items-center gap-2">
+
+{% if user.is_authenticated %}
+
+<a class="btn btn-light text-success"
+
+href="{% url 'recipes:recipe_create' %}">
+
+<i class="fas fa-plus me-1"></i>
+
+Nouvelle recette
+
+</a>
+
+
+<div class="dropdown">
+
+<a class="nav-link dropdown-toggle"
+
+data-bs-toggle="dropdown">
+
+<i class="fas fa-user-circle me-1"></i>
+
+{{ user.username }}
+
+</a>
+
+<ul class="dropdown-menu dropdown-menu-end">
+
+<li>
+
+<a class="dropdown-item"
+
+href="{% url 'accounts:profile' %}">
+
+<i class="fas fa-user me-2"></i>
+
+Mon profil
+
+</a>
+
+</li>
+
+<li>
+
+<a class="dropdown-item"
+
+href="{% url 'recipes:my_recipes' %}">
+
+<i class="fas fa-list me-2"></i>
+
+Mes recettes
+
+</a>
+
+</li>
+
+<li>
+
+<a class="dropdown-item"
+
+href="{% url 'favorites:favorites_list' %}">
+
+<i class="fas fa-heart me-2"></i>
+
+Mes favoris
+
+</a>
+
+</li>
+
+<li><hr class="dropdown-divider"></li>
+
+<li>
+
+<a class="dropdown-item text-danger"
+
+href="{% url 'accounts:logout' %}">
+
+<i class="fas fa-sign-out-alt me-2"></i>
+
+Déconnexion
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+{% else %}
+
+<a class="nav-link"
+
+href="{% url 'accounts:login' %}">
+
+Connexion
+
+</a>
+
+<a class="btn btn-light text-success"
+
+href="{% url 'accounts:register' %}">
+
+Inscription
+
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+</nav>
+
+
+{% if messages %}
+
+<div class="container mt-4">
+
+{% for message in messages %}
+
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+
+{{ message }}
+
+<button class="btn-close"
+
+data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+
+<main class="container my-4 main-content">
+
+{% block content %}{% endblock %}
+
+</main>
+
+
+<footer>
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-4">
+
+<h5>Culinary Recipes</h5>
+
+<p>
+
+Plateforme moderne pour partager
+
+et découvrir les meilleures recettes.
+
+</p>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Navigation</h5>
+
+<ul>
+
+<li>
+
+<a href="{% url 'home' %}">Accueil</a>
+
+</li>
+
+<li>
+
+<a href="{% url 'recipes:recipe_list' %}">
+
+Recettes
+
+</a>
+
+</li>
+
+<li>
+
+<a href="{% url 'recipes:search' %}">
+
+Recherche
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Contact</h5>
+
+<p>
+
+<i class="fas fa-envelope me-2"></i>
+
+contact@culinaryrecipes.com
+
+</p>
+
+<p>
+
+<i class="fas fa-phone me-2"></i>
+
++212 600000000
+
+</p>
+
+</div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+<p>
+
+© 2024 Culinary Recipes — Tous droits réservés
+
+</p>
+
+</div>
+
+</div>
+
+</footer>
+
+
+<a href="#" class="back-to-top">
+
+<i class="fas fa-arrow-up"></i>
+
+</a>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% block extra_js %}{% endblock %}
+
 </body>
+
 </html>
