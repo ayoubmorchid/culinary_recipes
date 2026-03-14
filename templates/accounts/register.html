@@ -2,165 +2,503 @@
 
 {% block title %}Inscription - Culinary Recipes{% endblock %}
 
+{% block extra_css %}
+<style>
+    .auth-wrapper {
+        min-height: 78vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+    }
+
+    .auth-card {
+        border: none;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 24px 50px rgba(15, 23, 42, 0.10);
+        background: #ffffff;
+    }
+
+    .auth-visual {
+        background:
+            radial-gradient(circle at top right, rgba(255,255,255,0.16), transparent 30%),
+            linear-gradient(135deg, #15803d 0%, #16a34a 55%, #166534 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-visual::before,
+    .auth-visual::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .auth-visual::before {
+        width: 180px;
+        height: 180px;
+        top: -60px;
+        right: -60px;
+    }
+
+    .auth-visual::after {
+        width: 120px;
+        height: 120px;
+        bottom: -40px;
+        left: -30px;
+    }
+
+    .auth-visual-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .auth-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        padding: 0.5rem 0.95rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .auth-visual h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+    }
+
+    .auth-visual p {
+        color: rgba(255,255,255,0.88);
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-feature {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.9rem;
+        color: rgba(255,255,255,0.92);
+        font-weight: 500;
+    }
+
+    .auth-feature i {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.14);
+    }
+
+    .auth-form-side {
+        padding: 2.5rem 2rem;
+    }
+
+    .auth-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 1rem;
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+        color: #15803d;
+        font-size: 2rem;
+        box-shadow: 0 12px 24px rgba(22, 163, 74, 0.12);
+    }
+
+    .auth-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 0.4rem;
+    }
+
+    .auth-subtitle {
+        color: #6b7280;
+        margin-bottom: 1.8rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+
+    .input-group,
+    .custom-input {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+        border: 1px solid #e5e7eb;
+        transition: all 0.25s ease;
+        background: #fff;
+    }
+
+    .input-group:focus-within,
+    .custom-input:focus {
+        border-color: #86efac;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.10);
+    }
+
+    .input-group-text {
+        background: #f8fafc;
+        border: none;
+        color: #15803d;
+        padding: 0.85rem 1rem;
+    }
+
+    .form-control {
+        border: none;
+        padding: 0.9rem 1rem;
+        box-shadow: none !important;
+    }
+
+    .form-control::placeholder {
+        color: #9ca3af;
+    }
+
+    .auth-btn {
+        border: none;
+        border-radius: 16px;
+        padding: 0.95rem 1.2rem;
+        font-weight: 700;
+        font-size: 1rem;
+        background: linear-gradient(135deg, #15803d, #16a34a);
+        box-shadow: 0 14px 28px rgba(22, 163, 74, 0.18);
+        transition: all 0.3s ease;
+    }
+
+    .auth-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 34px rgba(22, 163, 74, 0.24);
+    }
+
+    .auth-divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.7rem 0 1.2rem;
+        color: #9ca3af;
+        font-size: 0.92rem;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e5e7eb;
+    }
+
+    .login-btn {
+        border-radius: 14px;
+        padding: 0.8rem 1.2rem;
+        font-weight: 600;
+    }
+
+    .auth-footer-text {
+        color: #6b7280;
+        margin-bottom: 0.7rem;
+    }
+
+    .alert-danger {
+        border: none;
+        border-radius: 16px;
+        background: #fef2f2;
+        color: #b91c1c;
+        box-shadow: 0 10px 24px rgba(239, 68, 68, 0.08);
+    }
+
+    .field-error {
+        color: #dc2626;
+        font-size: 0.82rem;
+        margin-top: 0.45rem;
+        font-weight: 500;
+    }
+
+    .terms-box {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 0.9rem 1rem;
+    }
+
+    .terms-box a {
+        color: #15803d;
+        font-weight: 600;
+    }
+
+    @media (max-width: 991px) {
+        .auth-form-side {
+            padding: 2rem 1.4rem;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .auth-wrapper {
+            min-height: auto;
+            padding: 1rem 0;
+        }
+
+        .auth-title {
+            font-size: 1.7rem;
+        }
+
+        .auth-visual h2 {
+            font-size: 1.6rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8 col-lg-6">
-    <div class="card shadow-lg fade-in">
-      <div class="card-body p-5">
-        <div class="text-center mb-4">
-          <i class="fas fa-utensils fa-3x text-primary"></i>
-          <h2 class="mt-3">Créer un compte</h2>
-          <p class="text-muted">Rejoignez notre communauté de passionnés de cuisine</p>
+<div class="auth-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-11 col-lg-11">
+                <div class="auth-card">
+                    <div class="row g-0">
+                        <div class="col-lg-5">
+                            <div class="auth-visual">
+                                <div class="auth-visual-content">
+                                    <div class="auth-badge">
+                                        <i class="fas fa-leaf"></i>
+                                        Culinary Recipes
+                                    </div>
+
+                                    <h2>Rejoignez notre communauté</h2>
+                                    <p>
+                                        Créez votre compte pour partager vos recettes,
+                                        sauvegarder vos favoris et profiter d’une expérience culinaire moderne.
+                                    </p>
+
+                                    <div class="auth-feature">
+                                        <i class="fas fa-user-plus"></i>
+                                        <span>Créez votre espace personnel</span>
+                                    </div>
+
+                                    <div class="auth-feature">
+                                        <i class="fas fa-heart"></i>
+                                        <span>Enregistrez vos recettes favorites</span>
+                                    </div>
+
+                                    <div class="auth-feature">
+                                        <i class="fas fa-book-open"></i>
+                                        <span>Publiez vos propres créations</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="auth-form-side">
+                                <div class="text-center mb-4">
+                                    <div class="auth-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <h1 class="auth-title">Créer un compte</h1>
+                                    <p class="auth-subtitle">Rejoignez notre communauté de passionnés de cuisine</p>
+                                </div>
+
+                                {% if form.errors %}
+                                  <div class="alert alert-danger mb-4">
+                                    <strong>Veuillez corriger les erreurs ci-dessous :</strong>
+                                    <hr class="my-2">
+                                    {% for field in form %}
+                                      {% for error in field.errors %}
+                                        <div>• {{ error }}</div>
+                                      {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                      <div>• {{ error }}</div>
+                                    {% endfor %}
+                                  </div>
+                                {% endif %}
+
+                                <form method="POST" action="{% url 'accounts:register' %}">
+                                  {% csrf_token %}
+
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <label for="id_username" class="form-label">Nom d'utilisateur</label>
+                                      <div class="input-group">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-user"></i>
+                                        </span>
+                                        <input
+                                          type="text"
+                                          name="username"
+                                          class="form-control"
+                                          id="id_username"
+                                          value="{{ form.username.value|default_if_none:'' }}"
+                                          placeholder="Nom d'utilisateur"
+                                          required
+                                        >
+                                      </div>
+                                      {% if form.username.errors %}
+                                        <div class="field-error">
+                                          {{ form.username.errors|striptags }}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                      <label for="id_email" class="form-label">Email</label>
+                                      <div class="input-group">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input
+                                          type="email"
+                                          name="email"
+                                          class="form-control"
+                                          id="id_email"
+                                          value="{{ form.email.value|default_if_none:'' }}"
+                                          placeholder="Adresse email"
+                                          required
+                                        >
+                                      </div>
+                                      {% if form.email.errors %}
+                                        <div class="field-error">
+                                          {{ form.email.errors|striptags }}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <label for="id_first_name" class="form-label">Prénom</label>
+                                      <div class="input-group">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-id-badge"></i>
+                                        </span>
+                                        <input
+                                          type="text"
+                                          name="first_name"
+                                          class="form-control"
+                                          id="id_first_name"
+                                          value="{{ form.first_name.value|default_if_none:'' }}"
+                                          placeholder="Prénom"
+                                        >
+                                      </div>
+                                      {% if form.first_name.errors %}
+                                        <div class="field-error">
+                                          {{ form.first_name.errors|striptags }}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                      <label for="id_last_name" class="form-label">Nom</label>
+                                      <div class="input-group">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-id-card"></i>
+                                        </span>
+                                        <input
+                                          type="text"
+                                          name="last_name"
+                                          class="form-control"
+                                          id="id_last_name"
+                                          value="{{ form.last_name.value|default_if_none:'' }}"
+                                          placeholder="Nom"
+                                        >
+                                      </div>
+                                      {% if form.last_name.errors %}
+                                        <div class="field-error">
+                                          {{ form.last_name.errors|striptags }}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                      <label for="id_password1" class="form-label">Mot de passe</label>
+                                      <div class="input-group">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input
+                                          type="password"
+                                          name="password1"
+                                          class="form-control"
+                                          id="id_password1"
+                                          placeholder="Mot de passe"
+                                          required
+                                        >
+                                      </div>
+                                      {% if form.password1.errors %}
+                                        <div class="field-error">
+                                          {{ form.password1.errors|striptags }}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                      <label for="id_password2" class="form-label">Confirmer le mot de passe</label>
+                                      <div class="input-group">
+                                        <span class="input-group-text">
+                                          <i class="fas fa-shield-alt"></i>
+                                        </span>
+                                        <input
+                                          type="password"
+                                          name="password2"
+                                          class="form-control"
+                                          id="id_password2"
+                                          placeholder="Confirmer le mot de passe"
+                                          required
+                                        >
+                                      </div>
+                                      {% if form.password2.errors %}
+                                        <div class="field-error">
+                                          {{ form.password2.errors|striptags }}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+
+                                  <div class="mb-4 terms-box form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                      J'accepte les <a href="#">conditions d'utilisation</a>
+                                    </label>
+                                  </div>
+
+                                  <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary auth-btn">
+                                      <i class="fas fa-user-plus me-2"></i>Créer mon compte
+                                    </button>
+                                  </div>
+                                </form>
+
+                                <div class="auth-divider">ou</div>
+
+                                <div class="text-center">
+                                    <p class="auth-footer-text">Vous avez déjà un compte ?</p>
+                                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-success login-btn">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {# ✅ Affichage des erreurs du formulaire #}
-        {% if form.errors %}
-          <div class="alert alert-danger">
-            <strong>Veuillez corriger les erreurs ci-dessous :</strong>
-            <hr class="my-2">
-            {% for field in form %}
-              {% for error in field.errors %}
-                <div>• {{ error }}</div>
-              {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-              <div>• {{ error }}</div>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        <form method="POST" action="{% url 'accounts:register' %}">
-          {% csrf_token %}
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="id_username" class="form-label">Nom d'utilisateur</label>
-              <input
-                type="text"
-                name="username"
-                class="form-control"
-                id="id_username"
-                value="{{ form.username.value|default_if_none:'' }}"
-                required
-              >
-              {% if form.username.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.username.errors|striptags }}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="id_email" class="form-label">Email</label>
-              <input
-                type="email"
-                name="email"
-                class="form-control"
-                id="id_email"
-                value="{{ form.email.value|default_if_none:'' }}"
-                required
-              >
-              {% if form.email.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.email.errors|striptags }}
-                </div>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="id_first_name" class="form-label">Prénom</label>
-              <input
-                type="text"
-                name="first_name"
-                class="form-control"
-                id="id_first_name"
-                value="{{ form.first_name.value|default_if_none:'' }}"
-              >
-              {% if form.first_name.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.first_name.errors|striptags }}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="id_last_name" class="form-label">Nom</label>
-              <input
-                type="text"
-                name="last_name"
-                class="form-control"
-                id="id_last_name"
-                value="{{ form.last_name.value|default_if_none:'' }}"
-              >
-              {% if form.last_name.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.last_name.errors|striptags }}
-                </div>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="id_password1" class="form-label">Mot de passe</label>
-              <input
-                type="password"
-                name="password1"
-                class="form-control"
-                id="id_password1"
-                required
-              >
-              {% if form.password1.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.password1.errors|striptags }}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="id_password2" class="form-label">Confirmer le mot de passe</label>
-              <input
-                type="password"
-                name="password2"
-                class="form-control"
-                id="id_password2"
-                required
-              >
-              {% if form.password2.errors %}
-                <div class="text-danger small mt-1">
-                  {{ form.password2.errors|striptags }}
-                </div>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="terms" required>
-            <label class="form-check-label" for="terms">
-              J'accepte les <a href="#">conditions d'utilisation</a>
-            </label>
-          </div>
-
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary btn-lg">
-              <i class="fas fa-user-plus me-2"></i>Créer mon compte
-            </button>
-          </div>
-        </form>
-
-        <hr class="my-4">
-
-        <div class="text-center">
-          <p class="mb-0">Vous avez déjà un compte ?</p>
-          <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary mt-2">
-            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
-          </a>
-        </div>
-
       </div>
-    </div>
-  </div>
 </div>
 {% endblock %}
