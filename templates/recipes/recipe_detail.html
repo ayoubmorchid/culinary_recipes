@@ -2,112 +2,187 @@
 
 {% block title %}{{ recipe.title }} - Culinary Recipes{% endblock %}
 
+{% block extra_css %}
+<style>
+    .recipe-hero-img {
+        width: 100%;
+        max-height: 420px;
+        object-fit: cover;
+    }
+
+    .info-box {
+        background: #f8f9fa;
+        border-radius: 16px;
+        padding: 20px 15px;
+        text-align: center;
+        height: 100%;
+    }
+
+    .info-box i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .section-box {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .recipe-text-block {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 16px;
+        line-height: 1.8;
+    }
+
+    .comment-item {
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .comment-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .similar-card {
+        transition: 0.3s ease;
+        border-radius: 12px;
+        padding: 10px;
+    }
+
+    .similar-card:hover {
+        background: #f8f9fa;
+    }
+
+    .similar-thumb {
+        width: 65px;
+        height: 65px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .author-box {
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 15px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="row">
-    <!-- Main Content -->
+<div class="row g-4">
     <div class="col-lg-8">
-        <div class="card shadow fade-in">
+        <div class="card shadow-sm border-0 fade-in">
             {% if recipe.image %}
-                <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="max-height: 400px; object-fit: cover;">
+                <img src="{{ recipe.image.url }}" class="recipe-hero-img" alt="{{ recipe.title }}">
             {% else %}
-                <img src="https://via.placeholder.com/800x400?text=Recette" class="card-img-top" alt="{{ recipe.title }}">
+                <img src="https://via.placeholder.com/800x400?text=Recette" class="recipe-hero-img" alt="{{ recipe.title }}">
             {% endif %}
 
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
                     <div>
                         <span class="category-badge">{{ recipe.category.name|default:"Sans catégorie" }}</span>
-                        <h1 class="mt-3">{{ recipe.title }}</h1>
+                        <h1 class="mt-3 mb-2">{{ recipe.title }}</h1>
+                        <p class="text-muted mb-0">{{ recipe.description }}</p>
                     </div>
 
                     {% if user.is_authenticated %}
                         {% if is_favorite %}
-                            <a href="{% url 'favorites:remove_favorite' recipe.id %}?next={{ request.path }}" class="btn btn-outline-danger">
-                                <i class="fas fa-heart"></i> Retirer
+                            <a href="{% url 'favorites:remove_favorite' recipe.id %}?next={{ request.path|urlencode }}" class="btn btn-outline-danger">
+                                <i class="fas fa-heart me-1"></i>Retirer
                             </a>
                         {% else %}
-                            <a href="{% url 'favorites:add_favorite' recipe.id %}" class="btn btn-outline-primary">
-                                <i class="far fa-heart"></i> Favoris
+                            <a href="{% url 'favorites:add_favorite' recipe.id %}?next={{ request.path|urlencode }}" class="btn btn-outline-primary">
+                                <i class="far fa-heart me-1"></i>Favoris
                             </a>
                         {% endif %}
                     {% endif %}
                 </div>
 
-                <p class="text-muted">{{ recipe.description }}</p>
-
-                <!-- Recipe Info -->
-                <div class="row text-center mb-4">
-                    <div class="col-4">
-                        <div class="p-3 bg-light rounded">
-                            <i class="fas fa-clock fa-2x text-primary mb-2"></i>
-                            <p class="mb-0"><strong>{{ recipe.preparation_time }}</strong> min</p>
+                <div class="row g-3 my-4">
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <i class="fas fa-clock text-primary"></i>
+                            <p class="mb-1"><strong>{{ recipe.preparation_time }}</strong> min</p>
                             <small class="text-muted">Préparation</small>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="p-3 bg-light rounded">
-                            <i class="fas fa-fire fa-2x text-danger mb-2"></i>
-                            <p class="mb-0"><strong>{{ recipe.cooking_time }}</strong> min</p>
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <i class="fas fa-fire text-danger"></i>
+                            <p class="mb-1"><strong>{{ recipe.cooking_time }}</strong> min</p>
                             <small class="text-muted">Cuisson</small>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="p-3 bg-light rounded">
-                            <i class="fas fa-users fa-2x text-success mb-2"></i>
-                            <p class="mb-0"><strong>{{ recipe.servings }}</strong> pers.</p>
+                    <div class="col-md-4">
+                        <div class="info-box">
+                            <i class="fas fa-users text-success"></i>
+                            <p class="mb-1"><strong>{{ recipe.servings }}</strong> pers.</p>
                             <small class="text-muted">Portions</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- Rating -->
-                <div class="mb-4">
-                    <h4>
+                <div class="section-box">
+                    <h4 class="section-title">
                         <i class="fas fa-star text-warning me-2"></i>
                         {{ recipe.average_rating }}/5
                         <small class="text-muted">({{ recipe.total_ratings }} vote{{ recipe.total_ratings|pluralize }})</small>
                     </h4>
 
                     {% if user.is_authenticated and user != recipe.author %}
-                        <form method="POST" action="." class="d-inline">
+                        <form method="POST" action=".">
                             {% csrf_token %}
                             {{ rating_form.as_p }}
-                            <button type="submit" name="rating_submit" class="btn btn-sm btn-primary">
+                            <button type="submit" name="rating_submit" class="btn btn-primary btn-sm">
                                 Noter
                             </button>
                         </form>
                     {% endif %}
                 </div>
 
-                <!-- Ingredients -->
-                <div class="mb-4">
-                    <h4><i class="fas fa-carrot me-2"></i>Ingrédients</h4>
-                    <div class="list-group ingredient-list">
+                <div class="section-box">
+                    <h4 class="section-title">
+                        <i class="fas fa-carrot me-2"></i>Ingrédients
+                    </h4>
+                    <div class="recipe-text-block">
                         {{ recipe.ingredients|linebreaks }}
                     </div>
                 </div>
 
-                <!-- Instructions -->
-                <div class="mb-4">
-                    <h4><i class="fas fa-list-ol me-2"></i>Instructions</h4>
-                    <div class="list-group">
+                <div class="section-box">
+                    <h4 class="section-title">
+                        <i class="fas fa-list-ol me-2"></i>Instructions
+                    </h4>
+                    <div class="recipe-text-block">
                         {{ recipe.instructions|linebreaks }}
                     </div>
                 </div>
 
-                <!-- Author Info -->
-                <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                <div class="author-box d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-user-circle fa-2x text-secondary me-2"></i>
                         <div>
-                            <strong>{{ recipe.author.username }}</strong>
-                            <br>
+                            <strong>{{ recipe.author.username }}</strong><br>
                             <small class="text-muted">{{ recipe.created_at|date:"d F Y" }}</small>
                         </div>
                     </div>
 
                     {% if user == recipe.author %}
-                        <div>
+                        <div class="d-flex gap-2">
                             <a href="{% url 'recipes:recipe_update' recipe.slug %}" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-edit me-1"></i>Modifier
                             </a>
@@ -120,12 +195,13 @@
             </div>
         </div>
 
-        <!-- Comments -->
-        <div class="card shadow mt-4 fade-in">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="fas fa-comments me-2"></i>Commentaires ({{ recipe.total_comments }})</h4>
+        <div class="card shadow-sm border-0 mt-4 fade-in">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0">
+                    <i class="fas fa-comments me-2"></i>Commentaires ({{ recipe.total_comments }})
+                </h4>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
                 {% if user.is_authenticated %}
                     <form method="POST" action="." class="mb-4">
                         {% csrf_token %}
@@ -141,48 +217,46 @@
                 {% endif %}
 
                 {% for comment in comments %}
-                    <div class="border-bottom pb-3 mb-3">
-                        <div class="d-flex justify-content-between">
+                    <div class="comment-item">
+                        <div class="d-flex justify-content-between flex-wrap gap-2">
                             <strong>{{ comment.author.username }}</strong>
                             <small class="text-muted">{{ comment.created_at|date:"d F Y, H:i" }}</small>
                         </div>
                         <p class="mt-2 mb-0">{{ comment.content }}</p>
                     </div>
                 {% empty %}
-                    <p class="text-muted text-center">Aucun commentaire. Soyez le premier à commenter!</p>
+                    <p class="text-muted text-center mb-0">Aucun commentaire. Soyez le premier à commenter !</p>
                 {% endfor %}
             </div>
         </div>
     </div>
 
-    <!-- Sidebar -->
     <div class="col-lg-4">
         {% if similar_recipes %}
-        <div class="sidebar mb-4">
-            <h5 class="sidebar-title">
-                <i class="fas fa-utensils me-2"></i>Recettes similaires
-            </h5>
+            <div class="sidebar">
+                <h5 class="sidebar-title">
+                    <i class="fas fa-utensils me-2"></i>Recettes similaires
+                </h5>
 
-            {% for similar in similar_recipes %}
-                <a href="{{ similar.get_absolute_url }}" class="text-decoration-none">
-                    <div class="d-flex align-items-center mb-3">
-                        {% if similar.image %}
-                            <img src="{{ similar.image.url }}" alt="{{ similar.title }}" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                        {% else %}
-                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                <i class="fas fa-utensils text-muted"></i>
+                {% for similar in similar_recipes %}
+                    <a href="{{ similar.get_absolute_url }}" class="text-decoration-none text-dark">
+                        <div class="d-flex align-items-center mb-3 similar-card">
+                            {% if similar.image %}
+                                <img src="{{ similar.image.url }}" alt="{{ similar.title }}" class="similar-thumb">
+                            {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center similar-thumb">
+                                    <i class="fas fa-utensils text-muted"></i>
+                                </div>
+                            {% endif %}
+
+                            <div class="ms-3">
+                                <strong class="d-block">{{ similar.title }}</strong>
+                                <small class="text-muted">{{ similar.preparation_time }} min</small>
                             </div>
-                        {% endif %}
-
-                        <div class="ms-3">
-                            <strong>{{ similar.title }}</strong>
-                            <br>
-                            <small class="text-muted">{{ similar.preparation_time }} min</small>
                         </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
+                    </a>
+                {% endfor %}
+            </div>
         {% endif %}
     </div>
 </div>
