@@ -42,7 +42,119 @@
         padding: 2rem;
     }
 
- 
+    .section-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0d6efd;
+        margin-bottom: 1rem;
+        padding-left: 0.85rem;
+        border-left: 4px solid #0d6efd;
+    }
+
+    .field-label {
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 0.45rem;
+    }
+
+    .required-star {
+        color: #dc3545;
+        margin-left: 2px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 14px;
+        border: 1px solid #d9dee7;
+        padding: 0.8rem 0.95rem;
+        font-size: 0.96rem;
+        transition: all 0.2s ease;
+        background-color: #fff;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .form-control:hover,
+    .form-select:hover {
+        border-color: #b8c2d1;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.14);
+    }
+
+    .form-text {
+        color: #6c757d;
+        font-size: 0.87rem;
+        margin-top: 0.35rem;
+    }
+
+    .invalid-feedback.d-block {
+        font-size: 0.87rem;
+        margin-top: 0.4rem;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        border-radius: 14px;
+        border: 1px solid #f1b0b7;
+    }
+
+    .image-preview-wrapper {
+        margin-top: 0.9rem;
+        padding: 0.8rem;
+        border: 1px solid #e9ecef;
+        border-radius: 16px;
+        background: #f8f9fa;
+    }
+
+    .image-preview-label {
+        display: block;
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 0.6rem;
+        font-weight: 600;
+    }
+
+    .image-preview {
+        width: 100%;
+        max-height: 220px;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.25s ease;
+    }
+
+    .image-preview:hover {
+        transform: scale(1.02);
+    }
+
+    .publish-box {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 1rem 1.1rem;
+        border: 1px solid #e4e8ee;
+        border-radius: 16px;
+        background: #f8fafc;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-check-input {
+        width: 1.15rem;
+        height: 1.15rem;
+        cursor: pointer;
+        margin-top: 0;
+    }
 
     .publish-label {
         margin: 0;
