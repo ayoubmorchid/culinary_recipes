@@ -7,382 +7,270 @@
 {% block extra_css %}
 <style>
     .recipe-form-wrapper {
-        padding-top: 3rem;
+        padding-top: 1.2rem;
         padding-bottom: 3rem;
     }
 
+    .recipe-form-shell {
+        position: relative;
+    }
+
+    .recipe-form-shell::before,
+    .recipe-form-shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .recipe-form-shell::before {
+        width: 220px;
+        height: 220px;
+        top: -40px;
+        right: -50px;
+        background: rgba(34, 197, 94, 0.08);
+    }
+
+    .recipe-form-shell::after {
+        width: 160px;
+        height: 160px;
+        bottom: 20px;
+        left: -40px;
+        background: rgba(16, 185, 129, 0.08);
+    }
+
     .recipe-card {
+        position: relative;
+        z-index: 1;
         border: none;
-        border-radius: 22px;
+        border-radius: 28px;
         overflow: hidden;
         background: #ffffff;
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        box-shadow: 0 24px 55px rgba(15, 23, 42, 0.10);
+        transition: transform 0.30s ease, box-shadow 0.30s ease;
     }
 
     .recipe-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 22px 55px rgba(0, 0, 0, 0.12);
+        transform: translateY(-5px);
+        box-shadow: 0 30px 65px rgba(15, 23, 42, 0.14);
     }
 
     .recipe-card-header {
-        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #15803d 0%, #16a34a 55%, #22c55e 100%);
         color: #fff;
-        padding: 1.25rem 1.5rem;
+        padding: 1.5rem 1.6rem;
     }
 
-    .recipe-card-header h3,
-    .recipe-card-header h4 {
-        margin: 0;
-        font-weight: 700;
-        letter-spacing: 0.2px;
-    }
 
-    .recipe-card-body {
-        padding: 2rem;
-    }
-
-    .section-title {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.55rem;
-        font-size: 1rem;
-        font-weight: 700;
-        color: #0d6efd;
-        margin-bottom: 1rem;
-        padding-left: 0.85rem;
-        border-left: 4px solid #0d6efd;
-    }
-
-    .field-label {
-        font-weight: 600;
-        color: #212529;
-        margin-bottom: 0.45rem;
-    }
-
-    .required-star {
-        color: #dc3545;
-        margin-left: 2px;
-    }
-
-    .form-control,
-    .form-select {
-        border-radius: 14px;
-        border: 1px solid #d9dee7;
-        padding: 0.8rem 0.95rem;
-        font-size: 0.96rem;
-        transition: all 0.2s ease;
-        background-color: #fff;
-    }
-
-    textarea.form-control {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .form-control:hover,
-    .form-select:hover {
-        border-color: #b8c2d1;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.14);
-    }
-
-    .form-text {
-        color: #6c757d;
-        font-size: 0.87rem;
-        margin-top: 0.35rem;
-    }
-
-    .invalid-feedback.d-block {
-        font-size: 0.87rem;
-        margin-top: 0.4rem;
-        font-weight: 500;
-    }
-
-    .alert-danger {
-        border-radius: 14px;
-        border: 1px solid #f1b0b7;
-    }
-
-    .image-preview-wrapper {
-        margin-top: 0.9rem;
-        padding: 0.8rem;
-        border: 1px solid #e9ecef;
-        border-radius: 16px;
-        background: #f8f9fa;
-    }
-
-    .image-preview-label {
-        display: block;
-        font-size: 0.85rem;
-        color: #6c757d;
-        margin-bottom: 0.6rem;
-        font-weight: 600;
-    }
-
-    .image-preview {
-        width: 100%;
-        max-height: 220px;
-        object-fit: cover;
-        border-radius: 14px;
-        border: 1px solid #dee2e6;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-        transition: transform 0.25s ease;
-    }
-
-    .image-preview:hover {
-        transform: scale(1.02);
-    }
-
-    .publish-box {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        padding: 1rem 1.1rem;
-        border: 1px solid #e4e8ee;
-        border-radius: 16px;
-        background: #f8fafc;
-        margin-bottom: 1.5rem;
-    }
-
-    .form-check-input {
-        width: 1.15rem;
-        height: 1.15rem;
-        cursor: pointer;
-        margin-top: 0;
-    }
-
-    .publish-label {
-        margin: 0;
-        font-weight: 600;
-        color: #212529;
-        cursor: pointer;
-    }
-
-    .btn-action {
-        border-radius: 14px;
-        font-weight: 600;
-        padding: 0.85rem 1.15rem;
-        transition: all 0.2s ease;
-    }
-
-    .btn-primary.btn-action {
-        box-shadow: 0 8px 20px rgba(13, 110, 253, 0.2);
-    }
-
-    .btn-primary.btn-action:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 26px rgba(13, 110, 253, 0.28);
-    }
-
-    .btn-outline-secondary.btn-action:hover {
-        transform: translateY(-2px);
-    }
-
-    .recipe-form-footer {
-        padding-top: 0.5rem;
-    }
-
-    @media (max-width: 768px) {
-        .recipe-form-wrapper {
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-        }
-
-        .recipe-card-body {
-            padding: 1.25rem;
-        }
-    }
+    
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container recipe-form-wrapper">
-    <div class="row justify-content-center">
-        <div class="col-lg-9 col-xl-8">
+    <div class="recipe-form-shell">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-8">
 
-            <div class="recipe-card">
-                <div class="recipe-card-header">
-                    <h4 class="d-flex align-items-center">
-                        <i class="fas fa-utensils me-2"></i>
-                        {% if form.instance.pk %}
-                            Modifier une Recette
-                        {% else %}
-                            Créer une Recette
+                <div class="recipe-card">
+                    <div class="recipe-card-header">
+                        <h4 class="d-flex align-items-center">
+                            <i class="fas fa-utensils me-2"></i>
+                            {% if form.instance.pk %}
+                                Modifier une Recette
+                            {% else %}
+                                Créer une Recette
+                            {% endif %}
+                        </h4>
+                    </div>
+
+                    <div class="recipe-card-body">
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger mb-4">
+                                {{ form.non_field_errors }}
+                            </div>
                         {% endif %}
-                    </h4>
-                </div>
 
-                <div class="recipe-card-body">
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger mb-4">
-                            {{ form.non_field_errors }}
-                        </div>
-                    {% endif %}
+                        <form method="POST" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
 
-                    <form method="POST" enctype="multipart/form-data" novalidate>
-                        {% csrf_token %}
-
-                        <div class="section-title">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Informations générales</span>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.title.id_for_label }}" class="form-label field-label">
-                                Titre<span class="required-star">*</span>
-                            </label>
-                            {{ form.title }}
-                            {% if form.title.help_text %}
-                                <div class="form-text">{{ form.title.help_text }}</div>
-                            {% endif %}
-                            {% for error in form.title.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.description.id_for_label }}" class="form-label field-label">
-                                Description<span class="required-star">*</span>
-                            </label>
-                            {{ form.description }}
-                            {% if form.description.help_text %}
-                                <div class="form-text">{{ form.description.help_text }}</div>
-                            {% endif %}
-                            {% for error in form.description.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label for="{{ form.category.id_for_label }}" class="form-label field-label">
-                                    Catégorie
-                                </label>
-                                {{ form.category }}
-                                {% for error in form.category.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
+                            <div class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Informations générales</span>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <label for="{{ form.image.id_for_label }}" class="form-label field-label">
-                                    Image
-                                </label>
-                                {{ form.image }}
-                                {% for error in form.image.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-
-                                {% if form.instance.image %}
-                                    <div class="image-preview-wrapper">
-                                        <span class="image-preview-label">Image actuelle</span>
-                                        <img src="{{ form.instance.image.url }}"
-                                             alt="Image de la recette"
-                                             class="image-preview">
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="section-title">
-                            <i class="fas fa-clock"></i>
-                            <span>Détails</span>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 mb-4">
-                                <label for="{{ form.preparation_time.id_for_label }}" class="form-label field-label">
-                                    Préparation (min)
-                                </label>
-                                {{ form.preparation_time }}
-                                {% for error in form.preparation_time.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-                                <label for="{{ form.cooking_time.id_for_label }}" class="form-label field-label">
-                                    Cuisson (min)
-                                </label>
-                                {{ form.cooking_time }}
-                                {% for error in form.cooking_time.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-                                <label for="{{ form.servings.id_for_label }}" class="form-label field-label">
-                                    Portions
-                                </label>
-                                {{ form.servings }}
-                                {% for error in form.servings.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <div class="section-title">
-                            <i class="fas fa-list-ul"></i>
-                            <span>Contenu de la recette</span>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.ingredients.id_for_label }}" class="form-label field-label">
-                                Ingrédients<span class="required-star">*</span>
-                            </label>
-                            <div class="form-text mb-2">Ajoutez un ingrédient par ligne.</div>
-                            {{ form.ingredients }}
-                            {% for error in form.ingredients.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="{{ form.instructions.id_for_label }}" class="form-label field-label">
-                                Instructions<span class="required-star">*</span>
-                            </label>
-                            <div class="form-text mb-2">Ajoutez une étape par ligne.</div>
-                            {{ form.instructions }}
-                            {% for error in form.instructions.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="publish-box">
-                            {{ form.is_published }}
-                            <label for="{{ form.is_published.id_for_label }}" class="publish-label">
-                                Publier directement cette recette
-                            </label>
-                        </div>
-
-                        <div class="recipe-form-footer">
-                            <div class="d-flex flex-column flex-md-row gap-3">
-                                <button type="submit" class="btn btn-primary btn-lg btn-action flex-fill">
-                                    <i class="fas fa-save me-2"></i>
-                                    {% if form.instance.pk %}
-                                        Enregistrer les modifications
-                                    {% else %}
-                                        Publier la recette
+                            <div class="field-card mb-4">
+                                <div class="mb-4">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label field-label">
+                                        Titre<span class="required-star">*</span>
+                                    </label>
+                                    {{ form.title }}
+                                    {% if form.title.help_text %}
+                                        <div class="form-text">{{ form.title.help_text }}</div>
                                     {% endif %}
-                                </button>
+                                    {% for error in form.title.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
 
-                                <a href="{% url 'recipes:recipe_list' %}"
-                                   class="btn btn-outline-secondary btn-lg btn-action flex-fill">
-                                    <i class="fas fa-arrow-left me-2"></i>
-                                    Retour à la liste
-                                </a>
+                                <div class="mb-0">
+                                    <label for="{{ form.description.id_for_label }}" class="form-label field-label">
+                                        Description<span class="required-star">*</span>
+                                    </label>
+                                    {{ form.description }}
+                                    {% if form.description.help_text %}
+                                        <div class="form-text">{{ form.description.help_text }}</div>
+                                    {% endif %}
+                                    {% for error in form.description.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
 
-                    </form>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="field-card h-100">
+                                        <label for="{{ form.category.id_for_label }}" class="form-label field-label">
+                                            Catégorie
+                                        </label>
+                                        {{ form.category }}
+                                        {% for error in form.category.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <div class="field-card h-100">
+                                        <label for="{{ form.image.id_for_label }}" class="form-label field-label">
+                                            Image
+                                        </label>
+                                        {{ form.image }}
+                                        {% for error in form.image.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+
+                                        {% if form.instance.image %}
+                                            <div class="image-preview-wrapper">
+                                                <span class="image-preview-label">
+                                                    <i class="fas fa-image"></i>
+                                                    Image actuelle
+                                                </span>
+                                                <img src="{{ form.instance.image.url }}"
+                                                     alt="Image de la recette"
+                                                     class="image-preview">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-title">
+                                <i class="fas fa-clock"></i>
+                                <span>Détails</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="field-card h-100">
+                                        <label for="{{ form.preparation_time.id_for_label }}" class="form-label field-label">
+                                            Préparation (min)
+                                        </label>
+                                        {{ form.preparation_time }}
+                                        {% for error in form.preparation_time.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-4">
+                                    <div class="field-card h-100">
+                                        <label for="{{ form.cooking_time.id_for_label }}" class="form-label field-label">
+                                            Cuisson (min)
+                                        </label>
+                                        {{ form.cooking_time }}
+                                        {% for error in form.cooking_time.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-4">
+                                    <div class="field-card h-100">
+                                        <label for="{{ form.servings.id_for_label }}" class="form-label field-label">
+                                            Portions
+                                        </label>
+                                        {{ form.servings }}
+                                        {% for error in form.servings.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-title">
+                                <i class="fas fa-list-ul"></i>
+                                <span>Contenu de la recette</span>
+                            </div>
+
+                            <div class="field-card mb-4">
+                                <div class="mb-4">
+                                    <label for="{{ form.ingredients.id_for_label }}" class="form-label field-label">
+                                        Ingrédients<span class="required-star">*</span>
+                                    </label>
+                                    <div class="form-text mb-2">Ajoutez un ingrédient par ligne.</div>
+                                    {{ form.ingredients }}
+                                    {% for error in form.ingredients.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="mb-0">
+                                    <label for="{{ form.instructions.id_for_label }}" class="form-label field-label">
+                                        Instructions<span class="required-star">*</span>
+                                    </label>
+                                    <div class="form-text mb-2">Ajoutez une étape par ligne.</div>
+                                    {{ form.instructions }}
+                                    {% for error in form.instructions.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="publish-box">
+                                {{ form.is_published }}
+                                <label for="{{ form.is_published.id_for_label }}" class="publish-label">
+                                    Publier directement cette recette
+                                </label>
+                            </div>
+
+                            <div class="recipe-form-footer">
+                                <div class="d-flex flex-column flex-md-row gap-3">
+                                    <button type="submit" class="btn btn-success btn-lg btn-action flex-fill">
+                                        <i class="fas fa-save me-2"></i>
+                                        {% if form.instance.pk %}
+                                            Enregistrer les modifications
+                                        {% else %}
+                                            Publier la recette
+                                        {% endif %}
+                                    </button>
+
+                                    <a href="{% url 'recipes:recipe_list' %}"
+                                       class="btn btn-outline-secondary btn-lg btn-action flex-fill">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Retour à la liste
+                                    </a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 </div>
