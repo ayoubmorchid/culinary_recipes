@@ -64,8 +64,262 @@
         padding: 1.5rem 1.6rem;
     }
 
+    .recipe-card-header::before,
+    .recipe-card-header::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+    }
 
-    
+    .recipe-card-header::before {
+        width: 180px;
+        height: 180px;
+        top: -80px;
+        right: -40px;
+    }
+
+    .recipe-card-header::after {
+        width: 130px;
+        height: 130px;
+        bottom: -60px;
+        left: -30px;
+    }
+
+    .recipe-card-header h4 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+    }
+
+    .recipe-card-body {
+        padding: 2rem;
+        background: linear-gradient(180deg, #ffffff 0%, #fcfffd 100%);
+    }
+
+    .section-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #166534;
+        margin-bottom: 1.1rem;
+        padding-left: 0.95rem;
+        border-left: 5px solid #22c55e;
+    }
+
+    .section-title i {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(34, 197, 94, 0.12);
+        color: #15803d;
+        font-size: 0.95rem;
+    }
+
+    .field-label {
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .required-star {
+        color: #ef4444;
+        margin-left: 2px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 16px;
+        border: 1px solid #dbe5dd;
+        padding: 0.85rem 1rem;
+        font-size: 0.97rem;
+        transition: all 0.22s ease;
+        background-color: #ffffff;
+        box-shadow: none;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 130px;
+    }
+
+    .form-control:hover,
+    .form-select:hover {
+        border-color: #b8d3bf;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #22c55e;
+        box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.14);
+    }
+
+    .form-text {
+        color: #6b7280;
+        font-size: 0.88rem;
+        margin-top: 0.4rem;
+    }
+
+    .invalid-feedback.d-block {
+        font-size: 0.87rem;
+        margin-top: 0.45rem;
+        font-weight: 600;
+        color: #dc2626;
+    }
+
+    .alert-danger {
+        border: 1px solid #fecaca;
+        background: #fef2f2;
+        color: #991b1b;
+        border-radius: 18px;
+        padding: 0.95rem 1rem;
+    }
+
+    .field-card {
+        background: #ffffff;
+        border: 1px solid #eef5ef;
+        border-radius: 20px;
+        padding: 1rem;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.03);
+    }
+
+    .image-preview-wrapper {
+        margin-top: 0.9rem;
+        padding: 0.9rem;
+        border: 1px solid #dcfce7;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f0fdf4 0%, #f7fff9 100%);
+        box-shadow: 0 10px 24px rgba(34, 197, 94, 0.06);
+    }
+
+    .image-preview-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.85rem;
+        color: #166534;
+        margin-bottom: 0.7rem;
+        font-weight: 700;
+        background: rgba(34, 197, 94, 0.10);
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+    }
+
+    .image-preview {
+        width: 100%;
+        max-height: 240px;
+        object-fit: cover;
+        border-radius: 16px;
+        border: 1px solid #d1fae5;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .image-preview:hover {
+        transform: scale(1.02);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    .publish-box {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem 1.1rem;
+        border: 1px solid #bbf7d0;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+        margin-bottom: 1.7rem;
+        box-shadow: 0 12px 25px rgba(34, 197, 94, 0.06);
+    }
+
+    .form-check-input {
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+        margin-top: 0;
+        border: 1px solid #86efac;
+    }
+
+    .form-check-input:checked {
+        background-color: #16a34a;
+        border-color: #16a34a;
+    }
+
+    .publish-label {
+        margin: 0;
+        font-weight: 700;
+        color: #166534;
+        cursor: pointer;
+    }
+
+    .btn-action {
+        border-radius: 16px;
+        font-weight: 700;
+        padding: 0.95rem 1.2rem;
+        transition: all 0.25s ease;
+        border-width: 1px;
+    }
+
+    .btn-success.btn-action {
+        background: linear-gradient(135deg, #15803d, #16a34a);
+        border-color: #15803d;
+        box-shadow: 0 12px 24px rgba(22, 163, 74, 0.20);
+    }
+
+    .btn-success.btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 30px rgba(22, 163, 74, 0.28);
+    }
+
+    .btn-outline-secondary.btn-action {
+        border-color: #d1d5db;
+        color: #374151;
+        background: #fff;
+    }
+
+    .btn-outline-secondary.btn-action:hover {
+        transform: translateY(-2px);
+        background: #f9fafb;
+        border-color: #9ca3af;
+        color: #111827;
+    }
+
+    .recipe-form-footer {
+        padding-top: 0.3rem;
+    }
+
+    .helper-note {
+        margin-top: -0.2rem;
+        margin-bottom: 1rem;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .recipe-form-wrapper {
+            padding-top: 1rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .recipe-card-body {
+            padding: 1.25rem;
+        }
+
+        .recipe-card-header {
+            padding: 1.25rem 1.2rem;
+        }
+
+        .section-title {
+            font-size: 0.98rem;
+        }
+    }
 </style>
 {% endblock %}
 
