@@ -7,7 +7,7 @@
 {% block extra_css %}
 <style>
     .recipe-form-wrapper {
-        padding-top: 1.2rem;
+        padding-top: 1.25rem;
         padding-bottom: 3rem;
     }
 
@@ -19,49 +19,50 @@
     .recipe-form-shell::after {
         content: "";
         position: absolute;
-        border-radius: 50%;
-        z-index: 0;
+        border-radius: 999px;
         pointer-events: none;
+        z-index: 0;
+        filter: blur(8px);
     }
 
     .recipe-form-shell::before {
-        width: 220px;
-        height: 220px;
-        top: -40px;
-        right: -50px;
-        background: rgba(34, 197, 94, 0.08);
+        width: 260px;
+        height: 260px;
+        top: -50px;
+        right: -70px;
+        background: rgba(34, 197, 94, 0.10);
     }
 
     .recipe-form-shell::after {
-        width: 160px;
-        height: 160px;
-        bottom: 20px;
-        left: -40px;
+        width: 180px;
+        height: 180px;
+        left: -55px;
+        bottom: 30px;
         background: rgba(16, 185, 129, 0.08);
     }
 
     .recipe-card {
         position: relative;
         z-index: 1;
-        border: none;
-        border-radius: 28px;
+        border: 1px solid rgba(187, 247, 208, 0.45);
+        border-radius: 30px;
         overflow: hidden;
-        background: #ffffff;
-        box-shadow: 0 24px 55px rgba(15, 23, 42, 0.10);
+        background: linear-gradient(180deg, #ffffff 0%, #fcfffd 100%);
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.10);
         transition: transform 0.30s ease, box-shadow 0.30s ease;
     }
 
     .recipe-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 30px 65px rgba(15, 23, 42, 0.14);
+        transform: translateY(-4px);
+        box-shadow: 0 30px 70px rgba(15, 23, 42, 0.14);
     }
 
     .recipe-card-header {
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, #15803d 0%, #16a34a 55%, #22c55e 100%);
+        padding: 1.6rem 1.6rem 1.5rem;
+        background: linear-gradient(135deg, #166534 0%, #16a34a 55%, #22c55e 100%);
         color: #fff;
-        padding: 1.5rem 1.6rem;
     }
 
     .recipe-card-header::before,
@@ -73,54 +74,94 @@
     }
 
     .recipe-card-header::before {
-        width: 180px;
-        height: 180px;
-        top: -80px;
+        width: 200px;
+        height: 200px;
+        top: -95px;
         right: -40px;
     }
 
     .recipe-card-header::after {
-        width: 130px;
-        height: 130px;
-        bottom: -60px;
+        width: 140px;
+        height: 140px;
         left: -30px;
+        bottom: -70px;
+    }
+
+    .recipe-header-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .recipe-header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.9rem;
+        margin-bottom: 0.85rem;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(6px);
     }
 
     .recipe-card-header h4 {
-        position: relative;
-        z-index: 1;
         margin: 0;
         font-weight: 800;
         letter-spacing: 0.2px;
+        font-size: 1.5rem;
+    }
+
+    .recipe-header-text {
+        margin-top: 0.55rem;
+        margin-bottom: 0;
+        max-width: 720px;
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 0.96rem;
     }
 
     .recipe-card-body {
         padding: 2rem;
-        background: linear-gradient(180deg, #ffffff 0%, #fcfffd 100%);
     }
 
     .section-title {
-        display: inline-flex;
+        display: flex;
         align-items: center;
-        gap: 0.75rem;
-        font-size: 1.05rem;
+        gap: 0.8rem;
+        font-size: 1.06rem;
         font-weight: 800;
+        margin-bottom: 1rem;
         color: #166534;
-        margin-bottom: 1.1rem;
-        padding-left: 0.95rem;
-        border-left: 5px solid #22c55e;
     }
 
     .section-title i {
-        width: 34px;
-        height: 34px;
-        border-radius: 12px;
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         background: rgba(34, 197, 94, 0.12);
         color: #15803d;
         font-size: 0.95rem;
+        box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.10);
+    }
+
+    .field-card {
+        background: #ffffff;
+        border: 1px solid #edf6ef;
+        border-radius: 22px;
+        padding: 1rem;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .field-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 30px rgba(15, 23, 42, 0.06);
+        border-color: #d9f4de;
     }
 
     .field-label {
@@ -137,28 +178,32 @@
     .form-control,
     .form-select {
         border-radius: 16px;
-        border: 1px solid #dbe5dd;
-        padding: 0.85rem 1rem;
+        border: 1px solid #dbe7de;
+        padding: 0.9rem 1rem;
         font-size: 0.97rem;
+        background: #ffffff;
         transition: all 0.22s ease;
-        background-color: #ffffff;
-        box-shadow: none;
-    }
-
-    textarea.form-control {
-        resize: vertical;
-        min-height: 130px;
     }
 
     .form-control:hover,
     .form-select:hover {
-        border-color: #b8d3bf;
+        border-color: #b9dabc;
     }
 
     .form-control:focus,
     .form-select:focus {
         border-color: #22c55e;
-        box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.14);
+        box-shadow: 0 0 0 0.22rem rgba(34, 197, 94, 0.14);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 135px;
+    }
+
+    input[type="file"].form-control {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
     }
 
     .form-text {
@@ -168,82 +213,75 @@
     }
 
     .invalid-feedback.d-block {
-        font-size: 0.87rem;
-        margin-top: 0.45rem;
-        font-weight: 600;
         color: #dc2626;
+        font-size: 0.87rem;
+        font-weight: 600;
+        margin-top: 0.45rem;
     }
 
     .alert-danger {
         border: 1px solid #fecaca;
-        background: #fef2f2;
+        background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
         color: #991b1b;
         border-radius: 18px;
         padding: 0.95rem 1rem;
-    }
-
-    .field-card {
-        background: #ffffff;
-        border: 1px solid #eef5ef;
-        border-radius: 20px;
-        padding: 1rem;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 10px 20px rgba(239, 68, 68, 0.05);
     }
 
     .image-preview-wrapper {
-        margin-top: 0.9rem;
-        padding: 0.9rem;
-        border: 1px solid #dcfce7;
-        border-radius: 20px;
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid #d7f7df;
+        border-radius: 22px;
         background: linear-gradient(135deg, #f0fdf4 0%, #f7fff9 100%);
-        box-shadow: 0 10px 24px rgba(34, 197, 94, 0.06);
+        box-shadow: 0 12px 24px rgba(34, 197, 94, 0.07);
     }
 
     .image-preview-label {
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        font-size: 0.85rem;
-        color: #166534;
-        margin-bottom: 0.7rem;
-        font-weight: 700;
-        background: rgba(34, 197, 94, 0.10);
-        padding: 0.45rem 0.8rem;
+        margin-bottom: 0.75rem;
+        padding: 0.45rem 0.85rem;
         border-radius: 999px;
+        font-size: 0.83rem;
+        font-weight: 700;
+        color: #166534;
+        background: rgba(34, 197, 94, 0.12);
     }
 
     .image-preview {
         width: 100%;
-        max-height: 240px;
+        max-height: 250px;
         object-fit: cover;
-        border-radius: 16px;
+        border-radius: 18px;
         border: 1px solid #d1fae5;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .image-preview:hover {
         transform: scale(1.02);
-        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.12);
     }
 
     .publish-box {
         display: flex;
         align-items: center;
-        gap: 0.8rem;
+        gap: 0.85rem;
         padding: 1rem 1.1rem;
-        border: 1px solid #bbf7d0;
-        border-radius: 20px;
-        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
         margin-bottom: 1.7rem;
-        box-shadow: 0 12px 25px rgba(34, 197, 94, 0.06);
+        border-radius: 22px;
+        border: 1px solid #bbf7d0;
+        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+        box-shadow: 0 12px 24px rgba(34, 197, 94, 0.06);
     }
 
     .form-check-input {
         width: 1.2rem;
         height: 1.2rem;
-        cursor: pointer;
         margin-top: 0;
+        cursor: pointer;
         border: 1px solid #86efac;
     }
 
@@ -259,12 +297,15 @@
         cursor: pointer;
     }
 
+    .recipe-form-footer {
+        padding-top: 0.25rem;
+    }
+
     .btn-action {
         border-radius: 16px;
         font-weight: 700;
         padding: 0.95rem 1.2rem;
         transition: all 0.25s ease;
-        border-width: 1px;
     }
 
     .btn-success.btn-action {
@@ -275,13 +316,13 @@
 
     .btn-success.btn-action:hover {
         transform: translateY(-2px);
-        box-shadow: 0 16px 30px rgba(22, 163, 74, 0.28);
+        box-shadow: 0 18px 32px rgba(22, 163, 74, 0.28);
     }
 
     .btn-outline-secondary.btn-action {
+        background: #fff;
         border-color: #d1d5db;
         color: #374151;
-        background: #fff;
     }
 
     .btn-outline-secondary.btn-action:hover {
@@ -291,15 +332,10 @@
         color: #111827;
     }
 
-    .recipe-form-footer {
-        padding-top: 0.3rem;
-    }
-
-    .helper-note {
-        margin-top: -0.2rem;
-        margin-bottom: 1rem;
-        color: #6b7280;
-        font-size: 0.9rem;
+    .subtle-divider {
+        height: 1px;
+        margin: 1.25rem 0 1.4rem;
+        background: linear-gradient(90deg, rgba(34, 197, 94, 0), rgba(34, 197, 94, 0.18), rgba(34, 197, 94, 0));
     }
 
     @media (max-width: 768px) {
@@ -308,16 +344,24 @@
             padding-bottom: 1.5rem;
         }
 
-        .recipe-card-body {
-            padding: 1.25rem;
-        }
-
         .recipe-card-header {
             padding: 1.25rem 1.2rem;
         }
 
+        .recipe-card-body {
+            padding: 1.2rem;
+        }
+
+        .recipe-card-header h4 {
+            font-size: 1.25rem;
+        }
+
+        .recipe-header-text {
+            font-size: 0.9rem;
+        }
+
         .section-title {
-            font-size: 0.98rem;
+            font-size: 1rem;
         }
     }
 </style>
@@ -331,14 +375,25 @@
 
                 <div class="recipe-card">
                     <div class="recipe-card-header">
-                        <h4 class="d-flex align-items-center">
-                            <i class="fas fa-utensils me-2"></i>
-                            {% if form.instance.pk %}
-                                Modifier une Recette
-                            {% else %}
-                                Créer une Recette
-                            {% endif %}
-                        </h4>
+                        <div class="recipe-header-content">
+                            <div class="recipe-header-badge">
+                                <i class="fas fa-leaf"></i>
+                                <span>Formulaire recette</span>
+                            </div>
+
+                            <h4 class="d-flex align-items-center">
+                                <i class="fas fa-utensils me-2"></i>
+                                {% if form.instance.pk %}
+                                    Modifier une Recette
+                                {% else %}
+                                    Créer une Recette
+                                {% endif %}
+                            </h4>
+
+                            <p class="recipe-header-text">
+                                Renseignez les informations essentielles de votre recette avec une présentation claire, moderne et agréable à remplir.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="recipe-card-body">
@@ -383,6 +438,8 @@
                                     {% endfor %}
                                 </div>
                             </div>
+
+                            <div class="subtle-divider"></div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
